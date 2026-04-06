@@ -22,52 +22,54 @@
             background: rgb(248, 250, 252);
             border-radius: 10px;
             box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+        }
 
-            .form-control {
-                color: #7a7a7a;
-                font-size: 15px;
-                border: 2px solid #a2bed6;
-            }
+        .form-control {
+            color: #7a7a7a;
+            font-size: 15px;
+            border: 2px solid #a2bed6;
+        }
 
-            .form-control:focus::placeholder {
-                color: #bbb;
-            }
+        .form-control:focus::placeholder {
+            color: #bbb;
+        }
 
-            .btn {
-                background-color: #3773a8;
-                color: white;
-                border: none;
-                border-radius: 8px;
-                padding: 10px;
-                font-size: 16px;
-                transition: 0.3s;
-            }
+        .btn {
+            background-color: #3773a8;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            padding: 10px;
+            font-size: 16px;
+            transition: 0.3s;
+        }
 
-            .btn:hover {
-                background-color: #3a5aa5;
-                transform: scale(1.05);
-            }
-
+        .btn:hover {
+            background-color: #3a5aa5;
+            transform: scale(1.05);
         }
     </style>
 </head>
 
 <body>
     <div class="login-box">
-        <h2 class="text-center mb-5 mt-4"> Login </h2>
+        <h1 class="text-center mb-3 mt-4"> Login </h1>
+        <p class="text-center text-muted">Login to continue</p>
 
         <form>
             <!-- Email -->
-            <input type="email" class="form-control mb-4" placeholder="Enter Email">
+            <input type="email" id="emailField" class="form-control mb-4" placeholder="Enter Email">
 
             <!-- Password -->
-            <input type="password" class="form-control mb-4" placeholder="Enter Password">
+            <input type="password" id="passwordField" class="form-control mb-2" placeholder="Enter Password">
+            <div class="mb-3">
+                <input type="checkbox" onclick="togglePassword()"> Show Password
+            </div>
+            <a href="forgot.html" class="small">Forgot Password?</a>
 
-            <!-- Confirm Password -->
-            <input type="password" class="form-control mb-4" placeholder="Confirm Password">
 
             <!-- Button -->
-            <button class="btn w-100"> Login </button>
+            <button class="btn w-100 mt-3" id="submitBtn"> Login </button>
         </form>
 
         <!-- Login link -->
@@ -76,6 +78,28 @@
             <a href="signup.html">Sign Up</a>
         </p>
     </div>
+
+    <script>
+        document.getElementById("submitBtn").addEventListener("click", function (e) {
+            e.preventDefault();
+
+            let email = document.getElementById("emailField").value;
+            let password = document.getElementById("passwordField").value;
+            console.log("Login:", email, password);
+
+            // Here you will later send data to backend
+        });
+
+        function togglePassword() {
+    let passwordInput = document.getElementById("passwordField");
+
+    if (passwordInput.type === "password") {
+        passwordInput.type = "text";
+    } else {
+        passwordInput.type = "password";
+    }
+}
+    </script>
 </body>
 
 </html>
