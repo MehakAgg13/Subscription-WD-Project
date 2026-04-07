@@ -2,245 +2,275 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>AI Dashboard</title>
+<title>Smart Subscription Dashboard</title>
 
-<link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
 
 <style>
-
-*{
-    margin:0;
-    padding:0;
-    box-sizing:border-box;
-    font-family:'Segoe UI', sans-serif;
+body {
+    background: #eef2f7;
+    font-family: 'Segoe UI';
 }
-
-body{
-    background:linear-gradient(135deg,#0f172a,#1e293b);
-    color:white;
-    display:flex;
+.dark-mode {
+    background: #121212;
+    color: white;
 }
-
-/* Sidebar */
-.sidebar{
-    width:220px;
-    height:100vh;
-    background:rgba(255,255,255,0.05);
-    backdrop-filter:blur(10px);
-    padding:20px;
+.card-box {
+    padding: 20px;
+    border-radius: 12px;
+    color: white;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
 }
+.bg1 { background: linear-gradient(45deg,#007bff,#00c6ff); }
+.bg2 { background: linear-gradient(45deg,#28a745,#5ee7df); }
+.bg3 { background: linear-gradient(45deg,#ffc107,#ffdd00); color:black; }
+.bg4 { background: linear-gradient(45deg,#dc3545,#ff6a6a); }
 
-.sidebar h2{
-    margin-bottom:25px;
+.table {
+    background: white;
+    border-radius: 10px;
+    overflow: hidden;
 }
-
-.sidebar ul{
-    list-style:none;
+.calendar {
+    display: grid;
+    grid-template-columns: repeat(7,1fr);
+    gap: 5px;
 }
-
-.sidebar ul li{
-    padding:10px;
-    margin:10px 0;
-    border-radius:8px;
-    cursor:pointer;
+.day {
+    padding: 10px;
+    background: white;
+    border-radius: 8px;
+    text-align: center;
+    font-size: 12px;
 }
-
-.sidebar ul li:hover{
-    background:rgba(255,255,255,0.1);
+.highlight {
+    background: #ffc107;
 }
-
-/* Main */
-.main{
-    flex:1;
-    padding:20px;
-}
-
-/* Top */
-.topbar{
-    display:flex;
-    justify-content:space-between;
-    margin-bottom:20px;
-}
-
-/* Layout */
-.container{
-    display:grid;
-    grid-template-columns:2fr 1fr;
-    gap:20px;
-}
-
-/* Chat Box */
-.chat{
-    background:rgba(255,255,255,0.05);
-    border-radius:15px;
-    padding:15px;
-    height:400px;
-    overflow-y:auto;
-}
-
-.message{
-    margin:10px 0;
-    padding:10px 15px;
-    border-radius:12px;
-    width:fit-content;
-}
-
-.ai{
-    background:#6366f1;
-}
-
-.user{
-    background:#334155;
-    margin-left:auto;
-}
-
-/* Input */
-.input-box{
-    display:flex;
-    margin-top:10px;
-}
-
-.input-box input{
-    flex:1;
-    padding:10px;
-    border:none;
-    border-radius:10px 0 0 10px;
-}
-
-.input-box button{
-    padding:10px;
-    border:none;
-    background:#6366f1;
-    color:white;
-    border-radius:0 10px 10px 0;
-    cursor:pointer;
-}
-
-/* Insights */
-.card{
-    background:rgba(255,255,255,0.05);
-    padding:15px;
-    border-radius:15px;
-    margin-bottom:15px;
-}
-
-.card h3{
-    font-size:14px;
-    margin-bottom:5px;
-}
-
-.card span{
-    font-size:20px;
-    font-weight:bold;
-}
-
-/* Responsive */
-@media(max-width:768px){
-    .container{
-        grid-template-columns:1fr;
-    }
-    .sidebar{
-        display:none;
-    }
-}
-
 </style>
 </head>
 
 <body>
 
-<!-- Sidebar -->
-<div class="sidebar">
-    <h2>🤖 SmartAI</h2>
-    <ul>
-        <li>Dashboard</li>
-        <li>Subscriptions</li>
-        <li>Reminders</li>
-    </ul>
-</div>
+<div class="container mt-4">
 
-<!-- Main -->
-<div class="main">
-
-<div class="topbar">
-    <h2>AI Assistant</h2>
-</div>
-
-<div class="container">
-
-<!-- Chat Section -->
-<div>
-    <div class="chat" id="chat">
-        <div class="message ai">Hello 👋 I am your subscription assistant.</div>
-        <div class="message ai">You have 3 upcoming bills this week.</div>
-    </div>
-
-    <div class="input-box">
-        <input type="text" id="msg" placeholder="Ask something...">
-        <button onclick="send()">Send</button>
+<!-- Header -->
+<div class="d-flex justify-content-between mb-3">
+    <h2>📊 Smart Dashboard</h2>
+    <div>
+        <button class="btn btn-dark" onclick="toggleDark()">🌙</button>
+        <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modal">+ Add</button>
     </div>
 </div>
 
-<!-- Insights -->
-<div>
-
-<div class="card">
-    <h3>Total Spend</h3>
-    <span>₹1200</span>
+<!-- Cards -->
+<div class="row mb-4">
+    <div class="col-md-2"><div class="card-box bg1">Subs: <span id="total"></span></div></div>
+    <div class="col-md-2"><div class="card-box bg2">Monthly ₹: <span id="monthly"></span></div></div>
+    <div class="col-md-2"><div class="card-box bg3">Upcoming: <span id="upcoming"></span></div></div>
+    <div class="col-md-2"><div class="card-box bg4">Expired: <span id="expired"></span></div></div>
+    <div class="col-md-2"><div class="card-box bg1">Yearly ₹: <span id="yearly"></span></div></div>
 </div>
 
-<div class="card">
-    <h3>Active Subscriptions</h3>
-    <span>5</span>
+<!-- Alerts -->
+<div id="alerts"></div>
+
+<!-- Search + Filter -->
+<div class="row mb-2">
+    <div class="col-md-6">
+        <input type="text" id="search" class="form-control" placeholder="Search..." onkeyup="render()">
+    </div>
+    <div class="col-md-3">
+        <select id="filter" class="form-control" onchange="render()">
+            <option value="all">All</option>
+            <option value="active">Active</option>
+            <option value="expired">Expired</option>
+            <option value="monthly">Monthly</option>
+            <option value="yearly">Yearly</option>
+        </select>
+    </div>
 </div>
 
-<div class="card">
-    <h3>Next Bill</h3>
-    <span>Netflix - 10 Apr</span>
-</div>
+<!-- Table -->
+<table class="table table-bordered">
+<thead>
+<tr>
+<th>Name</th><th>Cost</th><th>Cycle</th><th>Date</th><th>Status</th><th>Action</th>
+</tr>
+</thead>
+<tbody id="table"></tbody>
+</table>
+
+<!-- Calendar -->
+<h4>📅 Bill Calendar</h4>
+<div id="calendar" class="calendar mb-4"></div>
 
 </div>
 
-</div>
+<!-- Modal -->
+<div class="modal fade" id="modal">
+<div class="modal-dialog">
+<div class="modal-content p-3">
 
+<h4 id="title">Add Subscription</h4>
+
+<input id="name" class="form-control mb-2" placeholder="Name">
+<input id="price" type="number" class="form-control mb-2" placeholder="Price">
+
+<select id="cycle" class="form-control mb-2">
+<option>Monthly</option>
+<option>Yearly</option>
+</select>
+
+<input type="date" id="date" class="form-control mb-2">
+
+<button class="btn btn-success" onclick="saveData()">Save</button>
+
+</div>
+</div>
 </div>
 
 <script>
 
-function send(){
-    let input=document.getElementById("msg");
-    let chat=document.getElementById("chat");
+let data = JSON.parse(localStorage.getItem("subs")) || [];
+let editIndex = -1;
 
-    if(input.value==="") return;
-
-    let userMsg=document.createElement("div");
-    userMsg.className="message user";
-    userMsg.innerText=input.value;
-
-    chat.appendChild(userMsg);
-
-    let aiMsg=document.createElement("div");
-    aiMsg.className="message ai";
-
-    // Simple AI logic
-    if(input.value.toLowerCase().includes("spend")){
-        aiMsg.innerText="You are spending ₹1200 monthly.";
-    }
-    else if(input.value.toLowerCase().includes("bill")){
-        aiMsg.innerText="Next bill: Netflix on 10 Apr.";
-    }
-    else{
-        aiMsg.innerText="I can help with subscriptions and reminders.";
-    }
-
-    chat.appendChild(aiMsg);
-
-    input.value="";
-    chat.scrollTop=chat.scrollHeight;
+function saveLocal(){
+    localStorage.setItem("subs", JSON.stringify(data));
 }
 
+function saveData(){
+    let obj = {
+        name: name.value,
+        price: +price.value,
+        cycle: cycle.value,
+        date: date.value
+    };
+
+    if(editIndex==-1) data.push(obj);
+    else data[editIndex] = obj;
+
+    editIndex = -1;
+    saveLocal();
+    render();
+}
+
+function edit(i){
+    let d = data[i];
+    name.value = d.name;
+    price.value = d.price;
+    cycle.value = d.cycle;
+    date.value = d.date;
+    editIndex = i;
+    new bootstrap.Modal(document.getElementById('modal')).show();
+}
+
+function del(i){
+    data.splice(i,1);
+    saveLocal();
+    render();
+}
+
+function renew(i){
+    let d = data[i];
+    let newDate = new Date(d.date);
+    newDate.setMonth(newDate.getMonth()+1);
+    d.date = newDate.toISOString().split('T')[0];
+    saveLocal();
+    render();
+}
+
+function getStatus(date){
+    return new Date(date) < new Date() ? "Expired" : "Active";
+}
+
+function render(){
+
+let table="",alerts="";
+let total=0,monthly=0,expired=0,upcoming=0,yearly=0;
+
+let searchVal = search.value.toLowerCase();
+let filterVal = filter.value;
+
+data.forEach((d,i)=>{
+
+if(!d.name.toLowerCase().includes(searchVal)) return;
+
+let status = getStatus(d.date);
+
+// filter logic
+if(filterVal=="active" && status!="Active") return;
+if(filterVal=="expired" && status!="Expired") return;
+if(filterVal=="monthly" && d.cycle!="Monthly") return;
+if(filterVal=="yearly" && d.cycle!="Yearly") return;
+
+total++;
+
+if(d.cycle=="Monthly") monthly+=d.price;
+if(d.cycle=="Yearly") yearly+=d.price;
+
+if(status=="Expired") expired++;
+else upcoming++;
+
+let diff = (new Date(d.date)-new Date())/(1000*60*60*24);
+
+if(diff<3 && diff>0){
+alerts += `<div class="alert alert-warning">⚠️ ${d.name} due in ${Math.floor(diff)} days</div>`;
+}
+
+table += `
+<tr>
+<td>${d.name}</td>
+<td>₹${d.price}</td>
+<td>${d.cycle}</td>
+<td>${d.date}</td>
+<td>${status}</td>
+<td>
+<button class="btn btn-sm btn-info" onclick="edit(${i})">✏️</button>
+<button class="btn btn-sm btn-danger" onclick="del(${i})">🗑️</button>
+<button class="btn btn-sm btn-success" onclick="renew(${i})">🔁</button>
+</td>
+</tr>`;
+});
+
+document.getElementById("table").innerHTML = table;
+document.getElementById("alerts").innerHTML = alerts;
+
+totalEl = document.getElementById("total").innerText = total;
+document.getElementById("monthly").innerText = monthly;
+document.getElementById("expired").innerText = expired;
+document.getElementById("upcoming").innerText = upcoming;
+document.getElementById("yearly").innerText = yearly;
+
+renderCalendar();
+}
+
+function renderCalendar(){
+let cal = document.getElementById("calendar");
+cal.innerHTML="";
+
+for(let i=1;i<=30;i++){
+let div = document.createElement("div");
+div.className="day";
+div.innerText=i;
+
+data.forEach(d=>{
+let day = new Date(d.date).getDate();
+if(day==i) div.classList.add("highlight");
+});
+
+cal.appendChild(div);
+}
+}
+
+function toggleDark(){
+document.body.classList.toggle("dark-mode");
+}
+
+render();
+
 </script>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
 </body>
 </html>
