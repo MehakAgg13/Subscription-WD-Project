@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI Dashboard</title>
+
+<link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+
+<style>
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:'Segoe UI', sans-serif;
+}
+
+body{
+    background:linear-gradient(135deg,#0f172a,#1e293b);
+    color:white;
+    display:flex;
+}
+
+/* Sidebar */
+.sidebar{
+    width:220px;
+    height:100vh;
+    background:rgba(255,255,255,0.05);
+    backdrop-filter:blur(10px);
+    padding:20px;
+}
+
+.sidebar h2{
+    margin-bottom:25px;
+}
+
+.sidebar ul{
+    list-style:none;
+}
+
+.sidebar ul li{
+    padding:10px;
+    margin:10px 0;
+    border-radius:8px;
+    cursor:pointer;
+}
+
+.sidebar ul li:hover{
+    background:rgba(255,255,255,0.1);
+}
+
+/* Main */
+.main{
+    flex:1;
+    padding:20px;
+}
+
+/* Top */
+.topbar{
+    display:flex;
+    justify-content:space-between;
+    margin-bottom:20px;
+}
+
+/* Layout */
+.container{
+    display:grid;
+    grid-template-columns:2fr 1fr;
+    gap:20px;
+}
+
+/* Chat Box */
+.chat{
+    background:rgba(255,255,255,0.05);
+    border-radius:15px;
+    padding:15px;
+    height:400px;
+    overflow-y:auto;
+}
+
+.message{
+    margin:10px 0;
+    padding:10px 15px;
+    border-radius:12px;
+    width:fit-content;
+}
+
+.ai{
+    background:#6366f1;
+}
+
+.user{
+    background:#334155;
+    margin-left:auto;
+}
+
+/* Input */
+.input-box{
+    display:flex;
+    margin-top:10px;
+}
+
+.input-box input{
+    flex:1;
+    padding:10px;
+    border:none;
+    border-radius:10px 0 0 10px;
+}
+
+.input-box button{
+    padding:10px;
+    border:none;
+    background:#6366f1;
+    color:white;
+    border-radius:0 10px 10px 0;
+    cursor:pointer;
+}
+
+/* Insights */
+.card{
+    background:rgba(255,255,255,0.05);
+    padding:15px;
+    border-radius:15px;
+    margin-bottom:15px;
+}
+
+.card h3{
+    font-size:14px;
+    margin-bottom:5px;
+}
+
+.card span{
+    font-size:20px;
+    font-weight:bold;
+}
+
+/* Responsive */
+@media(max-width:768px){
+    .container{
+        grid-template-columns:1fr;
+    }
+    .sidebar{
+        display:none;
+    }
+}
+
+</style>
+</head>
+
+<body>
+
+<!-- Sidebar -->
+<div class="sidebar">
+    <h2>🤖 SmartAI</h2>
+    <ul>
+        <li>Dashboard</li>
+        <li>Subscriptions</li>
+        <li>Reminders</li>
+    </ul>
+</div>
+
+<!-- Main -->
+<div class="main">
+
+<div class="topbar">
+    <h2>AI Assistant</h2>
+</div>
+
+<div class="container">
+
+<!-- Chat Section -->
+<div>
+    <div class="chat" id="chat">
+        <div class="message ai">Hello 👋 I am your subscription assistant.</div>
+        <div class="message ai">You have 3 upcoming bills this week.</div>
+    </div>
+
+    <div class="input-box">
+        <input type="text" id="msg" placeholder="Ask something...">
+        <button onclick="send()">Send</button>
+    </div>
+</div>
+
+<!-- Insights -->
+<div>
+
+<div class="card">
+    <h3>Total Spend</h3>
+    <span>₹1200</span>
+</div>
+
+<div class="card">
+    <h3>Active Subscriptions</h3>
+    <span>5</span>
+</div>
+
+<div class="card">
+    <h3>Next Bill</h3>
+    <span>Netflix - 10 Apr</span>
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+<script>
+
+function send(){
+    let input=document.getElementById("msg");
+    let chat=document.getElementById("chat");
+
+    if(input.value==="") return;
+
+    let userMsg=document.createElement("div");
+    userMsg.className="message user";
+    userMsg.innerText=input.value;
+
+    chat.appendChild(userMsg);
+
+    let aiMsg=document.createElement("div");
+    aiMsg.className="message ai";
+
+    // Simple AI logic
+    if(input.value.toLowerCase().includes("spend")){
+        aiMsg.innerText="You are spending ₹1200 monthly.";
+    }
+    else if(input.value.toLowerCase().includes("bill")){
+        aiMsg.innerText="Next bill: Netflix on 10 Apr.";
+    }
+    else{
+        aiMsg.innerText="I can help with subscriptions and reminders.";
+    }
+
+    chat.appendChild(aiMsg);
+
+    input.value="";
+    chat.scrollTop=chat.scrollHeight;
+}
+
+</script>
+
+</body>
+</html>
