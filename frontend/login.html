@@ -1,87 +1,42 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
-    <title>Login Page</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+
+    <!-- Bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
 
     <!-- Boxicons -->
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
 
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Poppins', sans-serif;
-        }
-
+        
+        
         body {
+            font-family: Georgia;
             min-height: 100vh;
-
-            /* ✅ Background Image */
-            background: url('background.jpg') no-repeat;
-            background-size: cover;          /* full screen */
-            background-position: center ; 
-            background-attachment: fixed;
-
+            background: url('../images/loginbg.jpg') center/cover no-repeat;
             display: flex;
             justify-content: center;
             align-items: center;
-
-            position: relative;
         }
 
-        /* ✅ Overlay */
-        body::before {
-            content: "";
-            position: fixed;
-            top: 0;
-            left: 0;
+        /* Glass effect box */
+        .login-box {
             width: 100%;
-            height: 100%;
-            background: rgba(0,0,0,0.5);
-            z-index: 0;
-        }
-
-        .wrapper {
-            position: relative;
-            z-index: 1;
-
-            width: 350px;
-            background: rgba(255, 255, 255, 0.1);
-            border: 2px solid rgba(255,255,255,0.2);
+            max-width: 400px;
+            background: rgba(193, 73, 73, 0.1);
             backdrop-filter: blur(15px);
-            border-radius: 15px;
-            padding: 30px 25px;
-            color: #fff;
-        }
-
-        .wrapper h1 {
-            text-align: center;
-            margin-bottom: 20px;
+            border-radius: 25px;
+            padding: 50px;
+            color: white;
         }
 
         .input-box {
             position: relative;
-            width: 100%;
-            height: 45px;
-            margin: 20px 0;
-        }
-
-        .input-box input {
-            width: 100%;
-            height: 100%;
-            background: transparent;
-            border: 2px solid rgba(255,255,255,0.3);
-            border-radius: 25px;
-            outline: none;
-            padding: 0 45px 0 15px;
-            color: #fff;
-            font-size: 15px;
-        }
-
-        .input-box input::placeholder {
-            color: #ddd;
         }
 
         .input-box i {
@@ -89,86 +44,75 @@
             right: 15px;
             top: 50%;
             transform: translateY(-50%);
-            font-size: 20px;
         }
 
-        .remember-forgot {
-            display: flex;
-            justify-content: space-between;
-            font-size: 14px;
-            margin: 10px 0 20px;
-        }
-
-        .remember-forgot a {
-            color: #fff;
-            text-decoration: none;
-        }
-
-        .remember-forgot a:hover {
-            text-decoration: underline;
-        }
-
-        .btn {
-            width: 100%;
-            height: 45px;
-            background: #fff;
-            border: none;
-            border-radius: 25px;
-            cursor: pointer;
-            font-weight: bold;
-            color: #333;
-            transition: 0.3s;
-        }
-
-        .btn:hover {
-            background: #ddd;
-        }
-
-        .register-link {
-            text-align: center;
-            margin-top: 15px;
-        }
-
-        .register-link a {
-            color: #fff;
-            text-decoration: none;
-            font-weight: bold;
-        }
-
-        .register-link a:hover {
-            text-decoration: underline;
+        .btn:hover{
+            background-color: #d7d7d7;
+            transform: scale(1.05);
         }
     </style>
 </head>
 
 <body>
 
-<div class="wrapper">
-    <form>
-        <h1>Login</h1>
+<div class="login-box shadow">
 
-        <div class="input-box">
-            <input type="text" placeholder="Username" required>
+    <h1 class="text-center mb-4">Login</h1>
+
+    <form>
+        <!-- Email -->
+        <div class="input-box mb-3">
+            <input type="email" id="emailField" class="form-control" placeholder="Email" required>
             <i class='bx bx-user'></i>
         </div>
 
-        <div class="input-box">
-            <input type="password" placeholder="Password" required>
+        <!-- Password -->
+        <div class="input-box mb-3">
+            <input type="password" id="passwordField" class="form-control" placeholder="Password" required>
             <i class='bx bx-lock-alt'></i>
         </div>
 
-        <div class="remember-forgot">
-            <label><input type="checkbox"> Remember me</label>
-            <a href="#">Forgot Password?</a>
+        <!-- Options -->
+        <div class="d-flex justify-content-between mb-3">
+            <label>
+                <input type="checkbox" onclick="togglePassword()"> Show Password
+            </label>
+            <a href="forgot.html" class="text-white text-decoration-none">Forgot?</a>
         </div>
 
-        <button type="submit" class="btn">Login</button>
-
-        <div class="register-link">
-            <p>Don't have an account? <a href="#">Register</a></p>
-        </div>
+        <!-- Button -->
+        <button class="btn btn-light w-100 fw-bold" id="submitBtn">Login</button>
     </form>
+
+    <p class="text-center mt-3">
+        Don't have an account?
+        <a href="signup.html" class="text-white fw-bold">Register</a>
+    </p>
+
 </div>
+
+<script>
+document.getElementById("submitBtn").addEventListener("click", function (e) {
+    e.preventDefault();
+
+    let email = document.getElementById("emailField").value;
+    let password = document.getElementById("passwordField").value;
+
+    let user = JSON.parse(localStorage.getItem("user"));
+
+    if (user && user.email === email && user.password === password) {
+        alert("Login Successful!");
+        window.location.href = "index.html";
+    } else {
+        alert("Invalid credentials!");
+    }
+});
+
+function togglePassword() {
+    let input = document.getElementById("passwordField");
+    input.type = input.type === "password" ? "text" : "password";
+}
+</script>
 
 </body>
 </html>
