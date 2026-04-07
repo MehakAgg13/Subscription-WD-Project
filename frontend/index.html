@@ -3,33 +3,46 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Smart Subscription Dashboard</title>
+<title>Dashboard</title>
 
 <!-- Bootstrap -->
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
 
+<!-- Boxicons -->
+<link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+
 <style>
 body {
-  background: #f1f5f9;
+  font-family: Georgia;
+  background: linear-gradient(135deg, #5f6bdc, #7a5dc7);
+  color: white;
+  margin: 0;
 }
 
 /* Sidebar */
 .sidebar {
-  width: 240px;
   height: 100vh;
-  background: linear-gradient(180deg, #4f46e5, #8e8a95);
-  color: white;
+  background: rgba(255,255,255,0.08);
+  backdrop-filter: blur(12px);
+  padding: 25px;
   position: fixed;
-  padding: 20px;
+  width: 240px;
+}
+
+.sidebar h3 {
+  margin-bottom: 30px;
 }
 
 .sidebar a {
-  display: block;
-  padding: 10px;
-  margin: 8px 0;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px;
+  margin: 10px 0;
   color: white;
   text-decoration: none;
-  border-radius: 8px;
+  border-radius: 10px;
+  transition: 0.3s;
 }
 
 .sidebar a:hover {
@@ -39,129 +52,153 @@ body {
 /* Main */
 .main {
   margin-left: 260px;
-  padding: 25px;
+  padding: 30px;
+}
+
+/* Glass Cards */
+.glass {
+  background: rgba(255,255,255,0.1);
+  backdrop-filter: blur(12px);
+  border-radius: 20px;
+  padding: 20px;
+}
+
+/* Hover effect */
+.glass:hover {
+  transform: translateY(-5px);
+  transition: 0.3s;
+}
+
+/* List item */
+.list-item {
+  background: rgba(255,255,255,0.08);
+  padding: 15px;
+  border-radius: 12px;
+  margin-bottom: 10px;
+}
+
+/* Button */
+.btn-custom {
+  background: white;
+  color: #333;
+  font-weight: bold;
+}
+
+.btn-custom:hover {
+  background: #ddd;
 }
 </style>
 </head>
 
 <body>
 
-<!-- Sidebar -->
-<div class="sidebar">
-  <h4 class="text-center mb-4">⚡ SmartSys</h4>
-  <a href="#">🏠 Dashboard</a>
-  <a href="#">📺 Subscriptions</a>
-  <a href="#">⏰ Reminders</a>
-  <a href="#">⚙ Settings</a>
+<div class="container-fluid">
+  <div class="row">
+
+    <!-- Sidebar -->
+    <div class="col-md-3 col-lg-2 sidebar">
+      <h3><i class='bx bx-bell'></i> SubRemind</h3>
+
+      <a href="#"><i class='bx bx-home'></i> Dashboard</a>
+      <a href="#"><i class='bx bx-tv'></i> Subscriptions</a>
+      <a href="#"><i class='bx bx-plus'></i> Add New</a>
+      <a href="#"><i class='bx bx-time'></i> Reminders</a>
+      <a href="#"><i class='bx bx-cog'></i> Settings</a>
+
+      <div class="mt-5">
+        <a href="#" class="text-danger">
+          <i class='bx bx-log-out'></i> Logout
+        </a>
+      </div>
+    </div>
+
+    <!-- Main -->
+    <div class="col-md-9 col-lg-10 main">
+
+      <!-- Header -->
+      <div class="glass mb-4">
+        <h2>Dashboard Overview</h2>
+        <p class="text-light">Welcome back! Here's your subscription summary.</p>
+      </div>
+
+      <!-- Cards -->
+      <div class="row g-4">
+
+        <div class="col-md-3">
+          <div class="glass">
+            <i class='bx bx-layer fs-3'></i>
+            <p class="mt-2">Active Subscriptions</p>
+            <h3>6</h3>
+          </div>
+        </div>
+
+        <div class="col-md-3">
+          <div class="glass">
+            <i class='bx bx-rupee fs-3'></i>
+            <p class="mt-2">Monthly Spending</p>
+            <h3>₹899</h3>
+          </div>
+        </div>
+
+        <div class="col-md-3">
+          <div class="glass">
+            <i class='bx bx-bell fs-3'></i>
+            <p class="mt-2">Upcoming Payments</p>
+            <h3>3</h3>
+          </div>
+        </div>
+
+        <div class="col-md-3">
+          <div class="glass">
+            <i class='bx bx-trending-up fs-3'></i>
+            <p class="mt-2">Saved This Year</p>
+            <h3>₹1200</h3>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Upcoming Payments -->
+      <div class="glass mt-4">
+        <h4><i class='bx bx-calendar'></i> Upcoming Payments</h4>
+
+        <div class="list-item d-flex justify-content-between">
+          <span>Netflix</span>
+          <span>₹199</span>
+        </div>
+
+        <div class="list-item d-flex justify-content-between">
+          <span>Spotify</span>
+          <span>₹119</span>
+        </div>
+
+        <div class="list-item d-flex justify-content-between">
+          <span>Amazon Prime</span>
+          <span>₹299</span>
+        </div>
+      </div>
+
+      <!-- Recent Activity -->
+      <div class="glass mt-4">
+        <h4><i class='bx bx-history'></i> Recent Activity</h4>
+
+        <div class="list-item">
+          <i class='bx bx-check-circle'></i> Netflix renewed
+        </div>
+
+        <div class="list-item">
+          <i class='bx bx-check-circle'></i> Spotify payment done
+        </div>
+
+        <div class="list-item">
+          <i class='bx bx-bell'></i> Reminder sent for Prime
+        </div>
+      </div>
+
+    </div>
+
+  </div>
 </div>
-
-<!-- Main -->
-<div class="main">
-
-  <h2 class="mb-4">Dashboard</h2>
-
-  <!-- Cards -->
-  <div class="row g-3 mb-4">
-
-    <div class="col-md-4">
-      <div class="card shadow-sm">
-        <div class="card-body">
-          <h6 class="text-muted">Total Subscriptions</h6>
-          <h3 id="totalSubs">5</h3>
-        </div>
-      </div>
-    </div>
-
-    <div class="col-md-4">
-      <div class="card shadow-sm">
-        <div class="card-body">
-          <h6 class="text-muted">Monthly Spend</h6>
-          <h3>₹ <span id="monthlySpend">1200</span></h3>
-        </div>
-      </div>
-    </div>
-
-    <div class="col-md-4">
-      <div class="card shadow-sm">
-        <div class="card-body">
-          <h6 class="text-muted">Upcoming Bills</h6>
-          <h3 id="upcoming">3</h3>
-        </div>
-      </div>
-    </div>
-
-  </div>
-
-  <!-- Subscriptions -->
-  <div class="card shadow-sm mb-4">
-    <div class="card-body">
-
-      <div class="d-flex justify-content-between align-items-center mb-3">
-        <h5>Your Subscriptions</h5>
-        <button class="btn btn-primary" onclick="addSubscription()">+ Add</button>
-      </div>
-
-      <div class="table-responsive">
-        <table class="table table-hover">
-          <thead class="table-light">
-            <tr>
-              <th>Name</th>
-              <th>Price</th>
-              <th>Billing Date</th>
-            </tr>
-          </thead>
-          <tbody id="subTable">
-            <tr>
-              <td>Netflix</td>
-              <td>₹500</td>
-              <td>10 Apr</td>
-            </tr>
-            <tr>
-              <td>Spotify</td>
-              <td>₹200</td>
-              <td>15 Apr</td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-
-    </div>
-  </div>
-
-  <!-- Reminders -->
-  <div class="card shadow-sm">
-    <div class="card-body">
-      <h5 class="mb-3">Upcoming Reminders</h5>
-
-      <ul class="list-group" id="reminderList">
-        <li class="list-group-item">Netflix bill due in 3 days</li>
-        <li class="list-group-item">Spotify bill due in 5 days</li>
-      </ul>
-    </div>
-  </div>
-
-</div>
-
-<script>
-function addSubscription() {
-  const name = prompt("Enter name:");
-  const price = prompt("Enter price:");
-  const date = prompt("Enter date:");
-
-  if(name && price && date){
-    let table = document.getElementById("subTable");
-    let row = table.insertRow();
-
-    row.insertCell(0).innerText = name;
-    row.insertCell(1).innerText = "₹" + price;
-    row.insertCell(2).innerText = date;
-
-    document.getElementById("totalSubs").innerText++;
-    document.getElementById("monthlySpend").innerText =
-      parseInt(document.getElementById("monthlySpend").innerText) + parseInt(price);
-  }
-}
-</script>
 
 </body>
 </html>
