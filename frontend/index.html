@@ -14,7 +14,7 @@
 <style>
 body {
   font-family: Georgia;
-  background: linear-gradient(135deg, #5f6bdc, #7a5dc7);
+   background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
   color: white;
   margin: 0;
 }
@@ -22,27 +22,30 @@ body {
 /* Sidebar */
 .sidebar {
   height: 100vh;
-  background: rgba(255,255,255,0.08);
-  backdrop-filter: blur(12px);
+   background: linear-gradient(135deg, #4f68d6 0%, #23063f 100%);
+  backdrop-filter: blur(15px);
   padding: 25px;
   position: fixed;
-  width: 240px;
+  width: 270px;
 }
 
 .sidebar h3 {
   margin-bottom: 30px;
+  font-weight: bolder;
 }
 
 .sidebar a {
   display: flex;
+  font-size: 18px;
   align-items: center;
   gap: 10px;
   padding: 12px;
   margin: 10px 0;
-  color: white;
+  color: whitesmoke;
   text-decoration: none;
   border-radius: 10px;
   transition: 0.3s;
+  
 }
 
 .sidebar a:hover {
@@ -55,12 +58,16 @@ body {
   padding: 30px;
 }
 
+
+
 /* Glass Cards */
 .glass {
-  background: rgba(255,255,255,0.1);
-  backdrop-filter: blur(12px);
-  border-radius: 20px;
-  padding: 20px;
+   background: rgba(193, 73, 73, 0.1);
+  backdrop-filter: blur(15px);
+  -webkit-backdrop-filter: blur(15px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  padding: 15px;
+  border-radius: 18px;
 }
 
 /* Hover effect */
@@ -97,7 +104,10 @@ body {
 
     <!-- Sidebar -->
     <div class="col-md-3 col-lg-2 sidebar">
+      <div class="sidehead">
       <h3><i class='bx bx-bell'></i> SubRemind</h3>
+      <p>Smart billing reminders.</p>
+      </div>
 
       <a href="#"><i class='bx bx-home'></i> Dashboard</a>
       <a href="#"><i class='bx bx-tv'></i> Subscriptions</a>
@@ -116,8 +126,8 @@ body {
     <div class="col-md-9 col-lg-10 main">
 
       <!-- Header -->
-      <div class="glass mb-4">
-        <h2>Dashboard Overview</h2>
+      <div class="glass mb-4 mt-2 ">
+        <h1 class="fw-bold"">Dashboard Overview</h1>
         <p class="text-light">Welcome back! Here's your subscription summary.</p>
       </div>
 
