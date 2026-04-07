@@ -4,6 +4,7 @@
 <meta charset="UTF-8">
 <title>Smart Subscription Dashboard</title>
 
+<!-- Bootstrap -->
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
 
 <style>
@@ -11,31 +12,19 @@ body {
     background: #eef2f7;
     font-family: 'Segoe UI';
 }
+
 .dark-mode {
     background: #121212;
     color: white;
 }
-.card-box {
-    padding: 20px;
-    border-radius: 12px;
-    color: white;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-}
-.bg1 { background: linear-gradient(45deg,#007bff,#00c6ff); }
-.bg2 { background: linear-gradient(45deg,#28a745,#5ee7df); }
-.bg3 { background: linear-gradient(45deg,#ffc107,#ffdd00); color:black; }
-.bg4 { background: linear-gradient(45deg,#dc3545,#ff6a6a); }
 
-.table {
-    background: white;
-    border-radius: 10px;
-    overflow: hidden;
-}
+/* Calendar */
 .calendar {
     display: grid;
     grid-template-columns: repeat(7,1fr);
-    gap: 5px;
+    gap: 8px;
 }
+
 .day {
     padding: 10px;
     background: white;
@@ -43,6 +32,7 @@ body {
     text-align: center;
     font-size: 12px;
 }
+
 .highlight {
     background: #ffc107;
 }
@@ -53,34 +43,65 @@ body {
 
 <div class="container mt-4">
 
-<!-- Header -->
-<div class="d-flex justify-content-between mb-3">
-    <h2>📊 Smart Dashboard</h2>
+<!-- HEADER -->
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h2 class="fw-bold">📊 Smart Dashboard</h2>
     <div>
-        <button class="btn btn-dark" onclick="toggleDark()">🌙</button>
+        <button class="btn btn-dark me-2" onclick="toggleDark()">🌙</button>
         <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modal">+ Add</button>
     </div>
 </div>
 
-<!-- Cards -->
-<div class="row mb-4">
-    <div class="col-md-2"><div class="card-box bg1">Subs: <span id="total"></span></div></div>
-    <div class="col-md-2"><div class="card-box bg2">Monthly ₹: <span id="monthly"></span></div></div>
-    <div class="col-md-2"><div class="card-box bg3">Upcoming: <span id="upcoming"></span></div></div>
-    <div class="col-md-2"><div class="card-box bg4">Expired: <span id="expired"></span></div></div>
-    <div class="col-md-2"><div class="card-box bg1">Yearly ₹: <span id="yearly"></span></div></div>
+<!-- CARDS -->
+<div class="row g-3 mb-4">
+
+    <div class="col-md-2">
+        <div class="card text-white bg-primary shadow-sm text-center p-3">
+            <p class="fw-semibold mb-1">Subs</p>
+            <h5 class="fw-bold" id="total"></h5>
+        </div>
+    </div>
+
+    <div class="col-md-2">
+        <div class="card text-white bg-success shadow-sm text-center p-3">
+            <p class="fw-semibold mb-1">Monthly ₹</p>
+            <h5 class="fw-bold" id="monthly"></h5>
+        </div>
+    </div>
+
+    <div class="col-md-2">
+        <div class="card bg-warning shadow-sm text-center p-3">
+            <p class="fw-semibold mb-1">Upcoming</p>
+            <h5 class="fw-bold" id="upcoming"></h5>
+        </div>
+    </div>
+
+    <div class="col-md-2">
+        <div class="card text-white bg-danger shadow-sm text-center p-3">
+            <p class="fw-semibold mb-1">Expired</p>
+            <h5 class="fw-bold" id="expired"></h5>
+        </div>
+    </div>
+
+    <div class="col-md-2">
+        <div class="card text-white bg-info shadow-sm text-center p-3">
+            <p class="fw-semibold mb-1">Yearly ₹</p>
+            <h5 class="fw-bold" id="yearly"></h5>
+        </div>
+    </div>
+
 </div>
 
-<!-- Alerts -->
-<div id="alerts"></div>
+<!-- ALERTS -->
+<div id="alerts" class="mb-3"></div>
 
-<!-- Search + Filter -->
-<div class="row mb-2">
+<!-- SEARCH + FILTER -->
+<div class="row mb-3 g-2">
     <div class="col-md-6">
-        <input type="text" id="search" class="form-control" placeholder="Search..." onkeyup="render()">
+        <input type="text" id="search" class="form-control shadow-sm" placeholder="🔍 Search..." onkeyup="render()">
     </div>
     <div class="col-md-3">
-        <select id="filter" class="form-control" onchange="render()">
+        <select id="filter" class="form-select shadow-sm" onchange="render()">
             <option value="all">All</option>
             <option value="active">Active</option>
             <option value="expired">Expired</option>
@@ -90,40 +111,57 @@ body {
     </div>
 </div>
 
-<!-- Table -->
-<table class="table table-bordered">
-<thead>
-<tr>
-<th>Name</th><th>Cost</th><th>Cycle</th><th>Date</th><th>Status</th><th>Action</th>
-</tr>
-</thead>
-<tbody id="table"></tbody>
-</table>
+<!-- TABLE -->
+<div class="card shadow-sm">
+    <div class="card-body">
+        <h5 class="fw-bold mb-3">Subscriptions</h5>
 
-<!-- Calendar -->
-<h4>📅 Bill Calendar</h4>
-<div id="calendar" class="calendar mb-4"></div>
+        <div class="table-responsive">
+            <table class="table table-hover align-middle">
+                <thead class="table-light">
+                    <tr>
+                        <th>Name</th>
+                        <th>Cost</th>
+                        <th>Cycle</th>
+                        <th>Date</th>
+                        <th>Status</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody id="table"></tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<!-- CALENDAR -->
+<div class="card shadow-sm mt-4">
+    <div class="card-body">
+        <h5 class="fw-bold mb-3">📅 Bill Calendar</h5>
+        <div id="calendar" class="calendar"></div>
+    </div>
+</div>
 
 </div>
 
-<!-- Modal -->
+<!-- MODAL -->
 <div class="modal fade" id="modal">
 <div class="modal-dialog">
 <div class="modal-content p-3">
 
-<h4 id="title">Add Subscription</h4>
+<h5 class="fw-bold mb-3">Add Subscription</h5>
 
 <input id="name" class="form-control mb-2" placeholder="Name">
 <input id="price" type="number" class="form-control mb-2" placeholder="Price">
 
-<select id="cycle" class="form-control mb-2">
+<select id="cycle" class="form-select mb-2">
 <option>Monthly</option>
 <option>Yearly</option>
 </select>
 
-<input type="date" id="date" class="form-control mb-2">
+<input type="date" id="date" class="form-control mb-3">
 
-<button class="btn btn-success" onclick="saveData()">Save</button>
+<button class="btn btn-success w-100" onclick="saveData()">Save</button>
 
 </div>
 </div>
@@ -197,7 +235,6 @@ if(!d.name.toLowerCase().includes(searchVal)) return;
 
 let status = getStatus(d.date);
 
-// filter logic
 if(filterVal=="active" && status!="Active") return;
 if(filterVal=="expired" && status!="Expired") return;
 if(filterVal=="monthly" && d.cycle!="Monthly") return;
@@ -235,7 +272,7 @@ table += `
 document.getElementById("table").innerHTML = table;
 document.getElementById("alerts").innerHTML = alerts;
 
-totalEl = document.getElementById("total").innerText = total;
+document.getElementById("total").innerText = total;
 document.getElementById("monthly").innerText = monthly;
 document.getElementById("expired").innerText = expired;
 document.getElementById("upcoming").innerText = upcoming;
@@ -269,8 +306,6 @@ document.body.classList.toggle("dark-mode");
 render();
 
 </script>
-
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
 </body>
 </html>
