@@ -53,7 +53,7 @@
       Enter your email and set a new password
     </p>
 
-    <form id="resetForm">
+    <form id="forgotForm">
 
       <!-- Email -->
       <input type="email" id="email" class="form-control mb-3" placeholder="Enter Email" required>
@@ -85,40 +85,47 @@
   </div>
 
   <script>
-    document.getElementById("resetForm").addEventListener("submit", function (e) {
-      e.preventDefault();
+document.getElementById("forgotForm").addEventListener("submit", function (e) {
+  e.preventDefault();
 
-      let email = document.getElementById("email").value;
-      let newPass = document.getElementById("newPassword").value;
-      let confirmPass = document.getElementById("confirmPassword").value;
+  let email = document.getElementById("email").value.trim();
+  let newPassword = document.getElementById("newPassword").value.trim();
+  let confirmPassword = document.getElementById("confirmPassword").value.trim();
 
-      let user = JSON.parse(localStorage.getItem("user"));
+  // ✅ check passwords match
+  if (newPassword !== confirmPassword) {
+    alert("Passwords do not match!");
+    return;
+  }
 
-      if (!user || user.email !== email) {
-        alert("Email not found!");
-        return;
-      }
+  fetch("http://localhost:5000/forgot-password", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({
+      email: email,
+      newPassword: newPassword
+    })
+  })
+  .then(res => res.text())
+  .then(data => {
+    alert(data);
 
-      if (newPass !== confirmPass) {
-        alert("Passwords do not match!");
-        return;
-      }
-
-      user.password = newPass;
-      localStorage.setItem("user", JSON.stringify(user));
-
-      alert("Password reset successful!");
+    if (data === "Password updated successfully") {
       window.location.href = "login.html";
-    });
-
-    function togglePassword() {
-      let p1 = document.getElementById("newPassword");
-      let p2 = document.getElementById("confirmPassword");
-
-      p1.type = p1.type === "password" ? "text" : "password";
-      p2.type = p2.type === "password" ? "text" : "password";
     }
-  </script>
+  });
+});
+
+function togglePassword() {
+  let p1 = document.getElementById("newPassword");
+  let p2 = document.getElementById("confirmPassword");
+
+  p1.type = p1.type === "password" ? "text" : "password";
+  p2.type = p2.type === "password" ? "text" : "password";
+}
+</script>
 
 </body>
 

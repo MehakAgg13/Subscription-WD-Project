@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login</title> 
+    <title>Login</title>
     <!-- Bootstrap -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
 
@@ -52,7 +52,7 @@
 <body>
     <div class="login-box shadow">
         <h1 class="text-center mb-4">Login</h1>
-        <form> <!-- Email -->
+        <form id="loginForm"> <!-- Email -->
             <div class="input-box mb-3"> <input type="email" id="emailField" class="form-control" placeholder="Email"
                     required> <i class='bx bx-user'></i> </div> <!-- Password -->
             <div class="input-box mb-3"> <input type="password" id="passwordField" class="form-control"
@@ -65,20 +65,31 @@
                 class="text-white fw-bold">Register</a> </p>
     </div>
     <script>
-        document.getElementById("submitBtn").addEventListener("click", function (e) {
 
+        document.getElementById("loginForm").addEventListener("submit", function (e) {
             e.preventDefault();
+
             let email = document.getElementById("emailField").value;
             let password = document.getElementById("passwordField").value;
-            let user = JSON.parse(localStorage.getItem("user"));
 
-            if (user && user.email === email && user.password === password) {
+            fetch("http://localhost:5000/login", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    email: email,
+                    password: password
+                })
+            })
+                .then(res => res.text())
+                .then(data => {
+                    alert(data);
 
-                alert("Login Successful!"); window.location.href = "index.html";
-            }
-            else {
-                alert("Invalid credentials!");
-            }
+                    if (data === "Login successful") {
+                        window.location.href = "firstpage.html";
+                    }
+                });
         });
 
         function togglePassword() {

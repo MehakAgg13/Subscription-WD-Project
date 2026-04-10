@@ -46,10 +46,69 @@ app.post("/signup", (req, res) => {
         else {
             res.send("Signup successful!!")
         }
-        
-console.log(name, email, password);
+
+        console.log(name, email, password);
 
     });
 
-
 });
+
+
+
+//Login API
+app.post("/login", (req, res) => {
+    const { email, password } = req.body;
+
+    console.log("Login Data:", email, password); 
+
+    const sql = "SELECT * FROM users WHERE email=? AND password=?";
+
+    db.query(sql, [email, password], (err, result) => {
+        if (err) {
+            console.log(err);
+            res.send("Error");
+        }
+        else if (result.length > 0) {
+            res.send("Login successful");
+        }
+        else {
+            console.log("No match found"); 
+            res.send("Invalid credentials");
+        }
+    });
+});
+
+
+// FORGOT PASSWORD API
+app.post("/forgot-password", (req, res) => {
+    const { email, newPassword } = req.body;
+
+    // Check if email exists
+    const checkSql = "SELECT * FROM users WHERE email=?";
+    
+    db.query(checkSql, [email], (err, result) => {
+        if (err) {
+            console.log(err);
+            return res.send("Error");
+        }
+
+        if (result.length === 0) {
+            return res.send("Email not found");
+        }
+
+        // Update password
+        const updateSql = "UPDATE users SET password=? WHERE email=?";
+        
+        db.query(updateSql, [newPassword, email], (err2, result2) => {
+            if (err2) {
+                console.log(err2);
+                return res.send("Error updating password");
+            }
+
+            res.send("Password updated successfully");
+        });
+    });
+});
+
+
+
