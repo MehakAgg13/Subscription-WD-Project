@@ -1,384 +1,425 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-<meta charset="UTF-8">
-<title>Settings - SubRemind</title>
+    <meta charset="UTF-8">
+    <title>Settings - SubRemind</title>
 
-<link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
 
-<style>
+    <style>
+        /* BASE */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
 
-/* BASE */
-*{
-margin:0;
-padding:0;
-box-sizing:border-box;
-font-family:'Poppins',sans-serif;
-}
+        body {
+            min-height: 100vh;
+            background: url('../images/loginbg.jpg') no-repeat center;
+            background-size: cover;
+            background-attachment: fixed;
+        }
 
-body{
-min-height:100vh;
-background:url('../images/loginbg.jpg') no-repeat center;
-background-size:cover;
-background-attachment:fixed;
-}
+        body::before {
+            content: "";
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 0;
+        }
 
-body::before{
-content:"";
-position:fixed;
-width:100%;
-height:100%;
-background:rgba(0,0,0,0.5);
-z-index:0;
-}
+        /* SIDEBAR */
+        .sidebar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 240px;
+            height: 100vh;
+            padding: 25px;
+            background: rgba(255, 255, 255, 0.1);
+            border-right: 2px solid rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(15px);
+            color: #fff;
+            z-index: 10;
+        }
 
-/* SIDEBAR */
-.sidebar{
-position:fixed;
-top:0;
-left:0;
-width:240px;
-height:100vh;
-padding:25px;
-background:rgba(255,255,255,0.1);
-border-right:2px solid rgba(255,255,255,0.2);
-backdrop-filter:blur(15px);
-color:#fff;
-z-index:10;
-}
+        .logo {
+            font-size: 22px;
+            font-weight: 600;
+        }
 
-.logo{font-size:22px;font-weight:600;}
-.subtitle{font-size:13px;margin-bottom:30px;color:#ddd;}
+        .subtitle {
+            font-size: 13px;
+            margin-bottom: 30px;
+            color: #ddd;
+        }
 
-.sidebar a{
-display:flex;
-align-items:center;
-gap:10px;
-padding:12px;
-border-radius:25px;
-text-decoration:none;
-color:#fff;
-margin-bottom:10px;
-transition:0.3s;
-}
+        .sidebar a {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 12px;
+            border-radius: 25px;
+            text-decoration: none;
+            color: #fff;
+            margin-bottom: 10px;
+            transition: 0.3s;
+        }
 
-.sidebar a:hover{background:rgba(255,255,255,0.2);}
-.active{background:rgba(255,255,255,0.25);}
+        .sidebar a:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
 
-/* MAIN */
-.main{
-margin-left:260px;
-padding:40px;
-color:#fff;
-position:relative;
-z-index:1;
-}
+        .active {
+            background: rgba(255, 255, 255, 0.25);
+        }
 
-/* GLASS */
-.glass{
-background:rgba(255,255,255,0.1);
-border:2px solid rgba(255,255,255,0.2);
-backdrop-filter:blur(15px);
-border-radius:15px;
-padding:30px;
-margin-bottom:25px;
-overflow: visible;
-position: relative;
-z-index: 1;
-}
+        /* MAIN */
+        .main {
+            margin-left: 260px;
+            padding: 40px;
+            color: #fff;
+            position: relative;
+            z-index: 1;
+        }
 
-/* INPUT */
-input{
-width:100%;
-padding:12px;
-border-radius:10px;
-border:2px solid rgba(255,255,255,0.2);
-background:rgba(255,255,255,0.1);
-color:#fff;
-margin-top:10px;
-}
+        /* GLASS */
+        .glass {
+            background: rgba(255, 255, 255, 0.1);
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(15px);
+            border-radius: 15px;
+            padding: 30px;
+            margin-bottom: 25px;
+            overflow: visible;
+            position: relative;
+            z-index: 1;
+        }
 
-/* LABEL */
-label{
-display:block;
-margin-top:15px;
-font-weight:600;
-}
+        /* INPUT */
+        input {
+            width: 100%;
+            padding: 12px;
+            border-radius: 10px;
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            background: rgba(255, 255, 255, 0.1);
+            color: #fff;
+            margin-top: 10px;
+        }
 
-/* NOTIFY */
-.notify{
-display:flex;
-justify-content:space-between;
-align-items:center;
-margin-top:20px;
-background:rgba(255,255,255,0.08);
-padding:15px;
-border-radius:12px;
-}
+        /* LABEL */
+        label {
+            display: block;
+            margin-top: 15px;
+            font-weight: 600;
+        }
 
-/* SWITCH */
-.switch{position:relative;width:50px;height:25px;}
-.switch input{opacity:0;}
-.slider{
-position:absolute;
-cursor:pointer;
-background:#555;
-border-radius:25px;
-top:0;left:0;right:0;bottom:0;
-}
-.slider:before{
-content:"";
-position:absolute;
-height:18px;width:18px;
-left:4px;bottom:3.5px;
-background:white;border-radius:50%;
-transition:.3s;
-}
-input:checked + .slider{background:#3b82f6;}
-input:checked + .slider:before{transform:translateX(24px);}
+        /* NOTIFY */
+        .notify {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 20px;
+            background: rgba(255, 255, 255, 0.08);
+            padding: 15px;
+            border-radius: 12px;
+        }
 
-/* ===== DROPDOWN (EXACT LIKE CATEGORY) ===== */
-.custom-select{
-position:relative;
-margin-top:10px;
-z-index: 1000;
-}
+        /* SWITCH */
+        .switch {
+            position: relative;
+            width: 50px;
+            height: 25px;
+        }
 
-.select-box{
-padding:12px;
-border-radius:10px;
-border:2px solid rgba(255,255,255,0.2);
-background:rgba(255,255,255,0.1);
-display:flex;
-justify-content:space-between;
-align-items:center;
-cursor:pointer;
-}
+        .switch input {
+            opacity: 0;
+        }
 
-.dropdown{
-position:absolute;
-top:110%;
-left:0;
-width:100%;
-max-height:220px;
-overflow-y:auto;
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            background: #555;
+            border-radius: 25px;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+        }
 
-/* 🔥 REAL FIX */
-background:rgba(0,0,0,0.95);
-backdrop-filter:blur(20px);
+        .slider:before {
+            content: "";
+            position: absolute;
+            height: 18px;
+            width: 18px;
+            left: 4px;
+            bottom: 3.5px;
+            background: white;
+            border-radius: 50%;
+            transition: .3s;
+        }
 
-border-radius:12px;
-display:none;
+        input:checked+.slider {
+            background: #3b82f6;
+        }
 
-/* 🔥 SUPER HIGH */
-z-index: 100;
+        input:checked+.slider:before {
+            transform: translateX(24px);
+        }
 
-/* 🔥 SHADOW FOR SEPARATION */
-box-shadow:0 20px 40px rgba(0,0,0,0.6);
-}
+        /* ===== DROPDOWN (EXACT LIKE CATEGORY) ===== */
+        .custom-select {
+            position: relative;
+            margin-top: 10px;
+            z-index: 1000;
+        }
 
-/* OPTIONS */
-.dropdown div{
-padding:12px;
-cursor:pointer;
-color:#fff;
-transition:all .2s ease;
-}
+        .select-box {
+            padding: 12px;
+            border-radius: 10px;
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            background: rgba(255, 255, 255, 0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            cursor: pointer;
+        }
 
-/* HOVER EFFECT */
-.dropdown div:hover{
-background:rgba(0, 0, 0, 0.749);   /* darker */
-backdrop-filter:blur(10px);
-color:#fff;
-border-radius: 6px;
-}
+        .dropdown {
+            top: 110%;
+            left: 0;
+            width: 100%;
+            max-height: 220px;
+            overflow-y: auto;
 
-/* BUTTON */
-.btn{
-width:100%;
-padding:14px;
-border:none;
-border-radius:12px;
-margin-top:15px;
-font-weight:600;
-cursor:pointer;
-}
+            /* 🔥 REAL FIX */
+            background: rgba(0, 0, 0, 0.95);
+            backdrop-filter: blur(20px);
 
-.primary{background:#fff;color:#000;}
-.blue{background:#3b82f6;color:#fff;}
-.red{background:#ef4444;color:#fff;}
+            border-radius: 12px;
+            display: none;
 
-</style>
+            /* 🔥 SUPER HIGH */
+            z-index: 100;
+
+            /* 🔥 SHADOW FOR SEPARATION */
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.6);
+        }
+
+        /* OPTIONS */
+        .dropdown div {
+            padding: 12px;
+            cursor: pointer;
+            color: #fff;
+            transition: all .2s ease;
+        }
+
+        /* HOVER EFFECT */
+        .dropdown div:hover {
+            background: rgba(51, 50, 50, 0.552);
+            /* darker */
+            backdrop-filter: blur(10px);
+            color: #fff;
+            border-radius: 6px;
+        }
+
+        /* BUTTON */
+        .btn {
+            width: 100%;
+            padding: 14px;
+            border: none;
+            border-radius: 12px;
+            margin-top: 15px;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        .primary {
+            background: #fff;
+            color: #000;
+        }
+
+        .blue {
+            background: #3b82f6;
+            color: #fff;
+        }
+
+        .red {
+            background: #ef4444;
+            color: #fff;
+        }
+    </style>
 </head>
 
 <body>
 
-<div class="sidebar">
-<div class="logo">🔔 SubRemind</div>
-<div class="subtitle">Smart Billing Reminders</div>
+    <div class="sidebar">
+        <div class="logo">🔔 SubRemind</div>
+        <div class="subtitle">Smart Billing Reminders</div>
 
-<a href="firstpage.html"><i class='bx bxs-dashboard'></i> Dashboard</a>
-<a><i class='bx bx-credit-card'></i> Subscriptions</a>
-<a href="addnewsubscription.html"><i class='bx bx-plus'></i> Add New</a>
-<a href="reminders.html"><i class='bx bx-bell'></i> Reminders</a>
-<a href="settings.html"><i class='bx bx-cog'></i> Settings</a>
+        <a href="firstpage.html"><i class='bx bxs-dashboard'></i> Dashboard</a>
+        <a><i class='bx bx-credit-card'></i> Subscriptions</a>
+        <a href="addnewsubscription.html"><i class='bx bx-plus'></i> Add New</a>
+        <a href="reminders.html"><i class='bx bx-bell'></i> Reminders</a>
+        <a class="active"><i class='bx bx-cog'></i> Settings</a>
 
-<div style="position:absolute; bottom:20px;">
-<a><i class='bx bx-log-out'></i> Logout</a>
-</div>
-</div>
+        <div style="position:absolute; bottom:20px;">
+            <a><i class='bx bx-log-out'></i> Logout</a>
+        </div>
+    </div>
 
-<div class="main">
+    <div class="main">
 
-<div class="glass">
-<h1>Settings</h1>
-<p>Manage your account and preferences</p>
-</div>
+        <div class="glass">
+            <h1>Settings</h1>
+            <p>Manage your account and preferences</p>
+        </div>
 
-<div class="glass">
-<h2><i class='bx bx-user'></i> Profile Settings</h2>
+        <div class="glass">
+            <h2><i class='bx bx-user'></i> Profile Settings</h2>
 
-<label>Full Name</label>
-<input value="John Doe">
+            <label>Full Name</label>
+            <input value="John Doe">
 
-<label><i class='bx bx-envelope'></i> Email Address</label>
-<input value="john.doe@example.com">
-</div>
+            <label><i class='bx bx-envelope'></i> Email Address</label>
+            <input value="john.doe@example.com">
+        </div>
 
-<div class="glass">
-<h2><i class='bx bx-bell'></i> Notification Settings</h2>
+        <div class="glass">
+            <h2><i class='bx bx-bell'></i> Notification Settings</h2>
 
-<div class="notify">
-<div>
-<strong>Email Notifications</strong>
-<p style="font-size:13px;color:#ddd;">Receive payment reminders via email</p>
-</div>
-<label class="switch">
-<input type="checkbox" checked>
-<span class="slider"></span>
-</label>
-</div>
+            <div class="notify">
+                <div>
+                    <strong>Email Notifications</strong>
+                    <p style="font-size:13px;color:#ddd;">Receive payment reminders via email</p>
+                </div>
+                <label class="switch">
+                    <input type="checkbox" checked>
+                    <span class="slider"></span>
+                </label>
+            </div>
 
-<div class="notify">
-<div>
-<strong>Push Notifications</strong>
-<p style="font-size:13px;color:#ddd;">Receive in-app notifications</p>
-</div>
-<label class="switch">
-<input type="checkbox" checked>
-<span class="slider"></span>
-</label>
-</div>
+            <div class="notify">
+                <div>
+                    <strong>Push Notifications</strong>
+                    <p style="font-size:13px;color:#ddd;">Receive in-app notifications</p>
+                </div>
+                <label class="switch">
+                    <input type="checkbox" checked>
+                    <span class="slider"></span>
+                </label>
+            </div>
 
-<div class="notify">
-<div>
-<strong>Weekly Report</strong>
-<p style="font-size:13px;color:#ddd;">Get a summary of your subscriptions</p>
-</div>
-<label class="switch">
-<input type="checkbox" checked>
-<span class="slider"></span>
-</label>
-</div>
+            <div class="notify">
+                <div>
+                    <strong>Weekly Report</strong>
+                    <p style="font-size:13px;color:#ddd;">Get a summary of your subscriptions</p>
+                </div>
+                <label class="switch">
+                    <input type="checkbox" checked>
+                    <span class="slider"></span>
+                </label>
+            </div>
 
-<label>Default Reminder Days Before Due Date</label>
+            <label>Default Reminder Days Before Due Date</label>
 
-<div class="custom-select" onclick="toggle('reminderDrop')">
-<div class="select-box">
-<span id="reminderText">3 days</span>
-<i class='bx bx-chevron-down'></i>
-</div>
+            <div class="custom-select" onclick="toggle('reminderDrop')">
+                <div class="select-box">
+                    <span id="reminderText">3 days</span>
+                    <i class='bx bx-chevron-down'></i>
+                </div>
 
-<div id="reminderDrop" class="dropdown">
-<div onclick="selectValue('reminderText','1 day')">1 day</div>
-<div onclick="selectValue('reminderText','3 days')">3 days</div>
-<div onclick="selectValue('reminderText','5 days')">5 days</div>
-<div onclick="selectValue('reminderText','7 days')">7 days</div>
-<div onclick="selectValue('reminderText','14 days')">14 days</div>
-</div>
-</div>
+                <div id="reminderDrop" class="dropdown">
+                    <div onclick="selectValue('reminderText','1 day')">1 day</div>
+                    <div onclick="selectValue('reminderText','3 days')">3 days</div>
+                    <div onclick="selectValue('reminderText','5 days')">5 days</div>
+                    <div onclick="selectValue('reminderText','7 days')">7 days</div>
+                    <div onclick="selectValue('reminderText','14 days')">14 days</div>
+                </div>
+            </div>
 
-</div>
+        </div>
 
-<div class="glass">
-<h2><i class='bx bx-palette'></i> Preferences</h2>
+        <div class="glass">
+            <h2><i class='bx bx-palette'></i> Preferences</h2>
 
-<label><i class="bx bx-globe"></i> Currency</label>
+            <label><i class="bx bx-globe"></i> Currency</label>
 
-<div class="custom-select" onclick="toggle('currencyDrop')">
-<div class="select-box">
-<span id="currencyText">USD - US Dollar</span>
-<i class='bx bx-chevron-down'></i>
-</div>
+            <div class="custom-select" onclick="toggle('currencyDrop')">
+                <div class="select-box">
+                    <span id="currencyText">INR - Indian Rupee</span>
+                    <i class='bx bx-chevron-down'></i>
+                </div>
 
-<div id="currencyDrop" class="dropdown">
-<div onclick="selectValue('currencyText','USD - US Dollar')">USD - US Dollar</div>
-<div onclick="selectValue('currencyText','EUR - Euro')">EUR - Euro</div>
-<div onclick="selectValue('currencyText','GBP - British Pound')">GBP - British Pound</div>
-<div onclick="selectValue('currencyText','INR - Indian Rupee')">INR - Indian Rupee</div>
-<div onclick="selectValue('currencyText','CAD - Canadian Dollar')">CAD - Canadian Dollar</div>
-</div>
-</div>
+                <div id="currencyDrop" class="dropdown">
+                    <div onclick="selectValue('currencyText','INR - Indian Rupee')">INR - Indian Rupee</div>
+                </div>
+            </div>
 
-<label>Theme</label>
+            <label>Theme</label>
 
-<div class="custom-select" onclick="toggle('themeDrop')">
-<div class="select-box">
-<span id="themeText">Gradient (Default)</span>
-<i class='bx bx-chevron-down'></i>
-</div>
+            <div class="custom-select" onclick="toggle('themeDrop')">
+                <div class="select-box">
+                    <span id="themeText">Gradient (Default)</span>
+                    <i class='bx bx-chevron-down'></i>
+                </div>
 
-<div id="themeDrop" class="dropdown">
-<div onclick="selectValue('themeText','Gradient (Default)')">Gradient (Default)</div>
-<div onclick="selectValue('themeText','Dark')">Dark</div>
-<div onclick="selectValue('themeText','Light')">Light</div>
-</div>
-</div>
+                <div id="themeDrop" class="dropdown">
+                    <div onclick="selectValue('themeText','Gradient (Default)')">Gradient (Default)</div>
+                    <div onclick="selectValue('themeText','Dark')">Dark</div>
+                    <div onclick="selectValue('themeText','Light')">Light</div>
+                </div>
+            </div>
 
-</div>
+        </div>
 
-<div class="glass">
-<h2><i class='bx bx-lock'></i> Security</h2>
-<button class="btn">Change Password</button>
-</div>
+        <div class="glass">
+            <h2><i class='bx bx-lock'></i> Security</h2>
+            <button class="btn">Change Password</button>
+        </div>
 
-<div class="glass">
-<h2>Data Management</h2>
-<button class="btn blue"><i class='bx bx-download'></i> Export Your Data</button>
-<button class="btn red"><i class='bx bx-trash'></i> Delete Account</button>
-</div>
+        <div class="glass">
+            <h2>Data Management</h2>
+            <button class="btn blue"><i class='bx bx-download'></i> Export Your Data</button>
+            <button class="btn red"><i class='bx bx-trash'></i> Delete Account</button>
+        </div>
 
-<button class="btn primary">Save Changes</button>
+        <button class="btn primary">Save Changes</button>
 
-</div>
+    </div>
 
-<script>
+    <script>
 
-/* TOGGLE DROPDOWN */
-function toggle(id){
-event.stopPropagation();
+        /* TOGGLE DROPDOWN */
+        function toggle(id) {
+            event.stopPropagation();
 
-document.querySelectorAll(".dropdown").forEach(d=>{
-if(d.id!==id) d.style.display="none";
-});
+            document.querySelectorAll(".dropdown").forEach(d => {
+                if (d.id !== id) d.style.display = "none";
+            });
 
-let el = document.getElementById(id);
-el.style.display = el.style.display==="block" ? "none" : "block";
-}
+            let el = document.getElementById(id);
+            el.style.display = el.style.display === "block" ? "none" : "block";
+        }
 
-/* SELECT VALUE */
-function selectValue(target,value){
-document.getElementById(target).innerText = value;
-document.querySelectorAll(".dropdown").forEach(d=>d.style.display="none");
-}
+        /* SELECT VALUE */
+        function selectValue(target, value) {
+            document.getElementById(target).innerText = value;
+            document.querySelectorAll(".dropdown").forEach(d => d.style.display = "none");
+        }
 
-/* CLOSE ON OUTSIDE CLICK */
-window.addEventListener("click",()=>{
-document.querySelectorAll(".dropdown").forEach(d=>d.style.display="none");
-});
+        /* CLOSE ON OUTSIDE CLICK */
+        window.addEventListener("click", () => {
+            document.querySelectorAll(".dropdown").forEach(d => d.style.display = "none");
+        });
 
-</script>
+    </script>
 
 </body>
+
 </html>
