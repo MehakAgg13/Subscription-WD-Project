@@ -11,7 +11,7 @@ app.use(express.json());
 const db = mysql.createConnection({
     host: "localhost",
     user: "root",
-    password: "root",
+    password: "@Inder971",
     database: "subscription_db"
 });
 
@@ -111,4 +111,61 @@ app.post("/forgot-password", (req, res) => {
 });
 
 
+
+// Add Subscription
+app.post("/add-subscription", (req, res) => {
+  const { user_id, name, amount, renewal_date, status } = req.body;
+  const sql = "INSERT INTO subscription (user_id, name, amount, renewal_date, status) VALUES (?, ?, ?, ?, ?)";
+  
+  db.query(sql, [user_id, name, amount, renewal_date, status], (err, result) => {
+    if (err) {
+      console.log(err);
+      return res.send("Error adding subscription");
+    }
+    res.send("Subscription added successfully!");
+  });
+});
+
+
+// Get Subscriptions
+app.get("/get-subscription", (req, res) => {
+  const sql = "SELECT * FROM subscription";
+  
+  db.query(sql, (err, result) => {
+    if (err) {
+      console.log(err);
+      return res.send("Error fetching subscriptions");
+    }
+    res.json(result);
+  });
+});
+
+// Delete Subscription
+app.delete("/delete-subscription/:id", (req, res) => {
+  const id = req.params.id;
+  const sql = "DELETE FROM subscription WHERE id=?";
+  
+  db.query(sql, [id], (err, result) => {
+    if (err) {
+      console.log(err);
+      return res.send("Error deleting subscription");
+    }
+    res.send("Subscription deleted successfully!");
+  });
+});
+
+// Update Subscription
+app.put("/update-subscription/:id", (req, res) => {
+  const id = req.params.id;
+  const { name, amount, renewal_date, status } = req.body;
+  const sql = "UPDATE subscription SET name=?, amount=?, renewal_date=?, status=? WHERE id=?";
+  
+  db.query(sql, [name, amount, renewal_date, status, id], (err, result) => {
+    if (err) {
+      console.log(err);
+      return res.send("Error updating subscription");
+    }
+    res.send("Subscription updated successfully!");
+  });
+});
 
