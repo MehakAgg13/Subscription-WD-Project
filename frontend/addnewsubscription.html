@@ -322,7 +322,7 @@ input[type="date"] {
 </div>
 
 <div class="btn-row">
-<button class="btn-primary">Add Subscription</button>
+<button class="btn-primary" onclick="addSubscription()">Add Subscription</button>
 <button class="btn-secondary" onclick="window.location.href='firstpage.html'">Cancel</button>
 </div>
 
@@ -369,6 +369,24 @@ window.addEventListener("click", function() {
     document.getElementById("billingDropdown").style.display = "none";   // billing
     document.getElementById("reminderDropdown").style.display = "none";  // reminder
 });
+
+async function addSubscription() {
+  const name = document.querySelector('input[placeholder="e.g., Netflix, Spotify, Adobe"]').value;
+  const amount = document.querySelector('input[placeholder="0.00"]').value;
+  const renewal_date = document.querySelector('input[type="date"]').value;
+  const status = "active";
+  const user_id = 1;
+
+  const response = await fetch("http://localhost:5000/add-subscription", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ user_id, name, amount, renewal_date, status })
+  });
+
+  const result = await response.text();
+  alert(result);
+}
+
 </script>
 
 </body>
