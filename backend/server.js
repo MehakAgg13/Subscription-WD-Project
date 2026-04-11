@@ -169,3 +169,37 @@ app.put("/update-subscription/:id", (req, res) => {
   });
 });
 
+// Total Monthly Spending
+app.get("/total-spending/:user_id", (req, res) => {
+  const user_id = req.params.user_id;
+  const sql = "SELECT SUM(amount) AS total FROM subscription WHERE user_id=? AND status='active'";
+  
+  db.query(sql, [user_id], (err, result) => {
+    if (err) {
+      console.log(err);
+      return res.send("Error calculating spending");
+    }
+    res.json({ total_monthly_spending: result[0].total });
+  });
+});
+
+// Reminder Logic
+app.get("/reminders/:user_id", (req, res) => {
+  const user_id = req.params.user_id;
+  const sql = `SELECT * FROM subscription 
+    WHERE user_id=? 
+    AND status='active' 
+    AND renewal_date BETWEEN CURDATE() AND DATE_ADD(CURDATE(), INTERVAL 7 DAY)`;
+  
+  db.query(sql, [user_id], (err, result) => {
+    if (err) {
+      console.log(err);
+      return res.send("Error fetching reminders");
+    }
+    if (result.length === 0) {
+      return res.json({ message: "No upcoming renewals in next 7 days" });
+    }
+    res.json({ upcoming_renewals: result });
+  });
+});
+
