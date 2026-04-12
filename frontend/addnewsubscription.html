@@ -236,7 +236,7 @@ input[type="date"] {
 
 <div class="form-group">
     <label>Service Name *</label>
-    <input type="text" placeholder="e.g., Netflix, Spotify, Adobe">
+    <input type="text" id="name" placeholder="e.g., Netflix, Spotify, Adobe">
 </div>
 
 <div class="row">
@@ -267,7 +267,7 @@ input[type="date"] {
 
 <div class="form-group">
 <label><i class='bx bx-rupee'></i> Amount *</label>
-<input type="number" placeholder="0.00">
+<input type="number" id="amount" placeholder="0.00">
 </div>
 
 </div>
@@ -292,7 +292,7 @@ input[type="date"] {
 
 <div class="form-group">
 <label><i class='bx bx-calendar'></i> Start Date *</label>
-<input type="date">
+<input type="date" id="date">
 </div>
 
 </div>
@@ -371,20 +371,47 @@ window.addEventListener("click", function() {
 });
 
 async function addSubscription() {
-  const name = document.querySelector('input[placeholder="e.g., Netflix, Spotify, Adobe"]').value;
-  const amount = document.querySelector('input[placeholder="0.00"]').value;
-  const renewal_date = document.querySelector('input[type="date"]').value;
+  const name = document.getElementById("name").value;
+  const amount = document.getElementById("amount").value;
+  const renewal_date = document.getElementById("date").value;
   const status = "active";
-  const user_id = 1;
 
-  const response = await fetch("http://localhost:5000/add-subscription", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ user_id, name, amount, renewal_date, status })
-  });
+  const user_id = parseInt(localStorage.getItem("user_id"));
 
-  const result = await response.text();
-  alert(result);
+  if (!user_id) {
+    alert("Please login first");
+    window.location.href = "login.html";
+    return;
+  }
+  if (!name || !amount || !renewal_date) {
+    alert("All fields are required");
+    return;
+  }
+
+  console.log({ user_id, name, amount, renewal_date, status });
+
+  try {
+    const response = await fetch("http://localhost:5000/add-subscription", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        user_id,
+        name,
+        amount,
+        renewal_date,
+        status
+      })
+    });
+
+    const result = await response.text();
+    alert(result);
+
+  } catch (error) {
+    console.log(error);
+    alert("Something went wrong");
+  }
 }
 
 </script>

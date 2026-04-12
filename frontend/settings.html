@@ -239,20 +239,11 @@
             cursor: pointer;
         }
 
-        .primary {
-            background: #fff;
-            color: #000;
-        }
-
-        .blue {
-            background: #3b82f6;
-            color: #fff;
-        }
-
         .red {
             background: #ef4444;
             color: #fff;
         }
+
     </style>
 </head>
 
@@ -284,10 +275,12 @@
             <h2><i class='bx bx-user'></i> Profile Settings</h2>
 
             <label>Full Name</label>
-            <input value="John Doe">
+            <input id="nameField">
+
 
             <label><i class='bx bx-envelope'></i> Email Address</label>
-            <input value="john.doe@example.com">
+            <input id="emailField">
+
         </div>
 
         <div class="glass">
@@ -380,45 +373,120 @@
 
         <div class="glass">
             <h2><i class='bx bx-lock'></i> Security</h2>
-            <button class="btn">Change Password</button>
+
+            <input type="password" id="oldPassword" placeholder="Current Password">
+            <input type="password" id="newPassword" placeholder="New Password">
+
+            <button class="btn" onclick="changePassword()">Change Password</button>
         </div>
 
         <div class="glass">
             <h2>Data Management</h2>
-            <button class="btn blue"><i class='bx bx-download'></i> Export Your Data</button>
-            <button class="btn red"><i class='bx bx-trash'></i> Delete Account</button>
+            <button class="btn red" onclick="deleteAccount()">
+                <i class='bx bx-trash'></i> Delete Account
+            </button>
+
+            <button class="btn primary" onclick="saveChanges()">Save Changes</button>
+
         </div>
 
-        <button class="btn primary">Save Changes</button>
+        <script>
 
-    </div>
+            /* TOGGLE DROPDOWN */
+            function toggle(id) {
+                event.stopPropagation();
 
-    <script>
+                document.querySelectorAll(".dropdown").forEach(d => {
+                    if (d.id !== id) d.style.display = "none";
+                });
 
-        /* TOGGLE DROPDOWN */
-        function toggle(id) {
-            event.stopPropagation();
+                let el = document.getElementById(id);
+                el.style.display = el.style.display === "block" ? "none" : "block";
+            }
 
-            document.querySelectorAll(".dropdown").forEach(d => {
-                if (d.id !== id) d.style.display = "none";
+            /* SELECT VALUE */
+            function selectValue(target, value) {
+                document.getElementById(target).innerText = value;
+                document.querySelectorAll(".dropdown").forEach(d => d.style.display = "none");
+            }
+
+            /* CLOSE ON OUTSIDE CLICK */
+            window.addEventListener("click", () => {
+                document.querySelectorAll(".dropdown").forEach(d => d.style.display = "none");
             });
 
-            let el = document.getElementById(id);
-            el.style.display = el.style.display === "block" ? "none" : "block";
-        }
 
-        /* SELECT VALUE */
-        function selectValue(target, value) {
-            document.getElementById(target).innerText = value;
-            document.querySelectorAll(".dropdown").forEach(d => d.style.display = "none");
-        }
+            // Load logged-in user data
+            window.onload = function () {
+                const user_id = localStorage.getItem("user_id");
 
-        /* CLOSE ON OUTSIDE CLICK */
-        window.addEventListener("click", () => {
-            document.querySelectorAll(".dropdown").forEach(d => d.style.display = "none");
-        });
+                fetch(`http://localhost:5000/user/${user_id}`)
+                    .then(res => res.json())
+                    .then(data => {
+                        document.getElementById("nameField").value = data.name;
+                        document.getElementById("emailField").value = data.email;
+                    })
+                    .catch(err => console.log(err));
+            };
 
-    </script>
+
+
+            function changePassword() {
+                let newPassword = document.getElementById("newPassword").value;
+                let email = localStorage.getItem("email"); // 👈 important
+
+                if (!newPassword) {
+                    alert("Enter new password");
+                    return;
+                }
+
+                fetch("http://localhost:5000/forgot-password", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({
+                        email: email,
+                        newPassword: newPassword
+                    })
+                })
+                    .then(res => res.text())
+                    .then(data => {
+                        alert(data);
+                    });
+            }
+
+
+
+            function deleteAccount() {
+                const user_id = localStorage.getItem("user_id");
+
+                // Confirm before deleting
+                if (!confirm("Are you sure you want to delete your account?")) {
+                    return;
+                }
+
+                fetch(`http://localhost:5000/delete-user/${user_id}`, {
+                    method: "DELETE"
+                })
+                    .then(res => res.text())
+                    .then(data => {
+                        alert(data);
+
+                        // Clear local storage
+                        localStorage.clear();
+
+                        // Redirect to login
+                        window.location.href = "login.html";
+                    })
+                    .catch(err => console.log(err));
+            }
+
+            function saveChanges(){
+                alert("Changes saved successfully!!")
+            }
+
+        </script>
 
 </body>
 

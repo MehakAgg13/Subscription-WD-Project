@@ -59,7 +59,8 @@
                     placeholder="Password" required> <i class='bx bx-lock-alt'></i> </div> <!-- Options -->
             <div class="d-flex justify-content-between mb-3"> <label> <input type="checkbox" onclick="togglePassword()">
                     Show Password </label> <a href="forgot.html" class="text-white text-decoration-none">Forgot?</a>
-            </div> <!-- Button --> <button class="btn btn-light w-100 fw-bold" id="submitBtn">Login</button>
+            </div> <!-- Button -->
+            <button class="btn btn-light w-100 fw-bold" id="submitBtn">Login</button>
         </form>
         <p class="text-center mt-3"> Don't have an account? <a href="signup.html"
                 class="text-white fw-bold">Register</a> </p>
@@ -82,13 +83,17 @@
                     password: password
                 })
             })
-                .then(res => res.text())
+                .then(res => res.json())
                 .then(data => {
-                    alert(data);
+                    alert(data.message);
 
-                    if (data === "Login successful") {
+                    if (data.message === "Login successful") {
+                        localStorage.setItem("user_id", data.user_id);
+                        localStorage.setItem("email", data.email);
                         window.location.href = "firstpage.html";
                     }
+
+
                 });
         });
 
