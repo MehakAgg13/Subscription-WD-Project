@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>SubRemind</title>
+
+
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <div class="sidebar">
+        <div class="logo">🔔 SubRemind</div>
+        <div class="subtitle">Smart Billing Reminders</div>
+        <a href="firstpage.html" class="active">
+            <i class='bx bxs-dashboard'></i> Dashboard
+        </a>
+        <a><i class='bx bx-credit-card'></i> Subscriptions</a>
+
+        <a href="addnewsubscription.html">
+            <i class='bx bx-plus'></i> Add New
+        </a>
+        <a href="reminders.html"><i class='bx bx-bell'></i> Reminders</a>
+        <a href="settings.html"><i class='bx bx-cog'></i> Settings</a>
+
+        <div style="position:absolute; bottom:20px;">
+            <a href="login.html"><i class='bx bx-log-out'></i> Logout</a>
+        </div>
+    </div>
+
+    <div class="main">
+
+        <div class="glass">
+            <h1>Dashboard Overview</h1>
+            <p>Welcome back! Here's your subscription summary.</p>
+        </div>
+
+        <div class="row">
+
+            <div class="col">
+                <div class="card-box">
+                    <span class="percent green">+12%</span>
+                    <div class="icon-box blue"><i class='bx bx-layer'></i></div>
+                    <p>Active Subscriptions</p>
+                    <h2>24</h2>
+                </div>
+            </div>
+
+            <div class="col">
+                <div class="card-box">
+                    <span class="percent red">-8%</span>
+                    <div class="icon-box purple"><i class='bx bx-rupee'></i></div>
+                    <p>Monthly Spending</p>
+                    <h2>₹720</h2>
+                </div>
+            </div>
+
+            <div class="col">
+                <div class="card-box">
+                    <div class="icon-box yellow"><i class='bx bx-bell'></i></div>
+                    <p>Upcoming Payments</p>
+                    <h2>8</h2>
+                </div>
+            </div>
+
+            <div class="col">
+                <div class="card-box">
+                    <span class="percent green">+5%</span>
+                    <div class="icon-box green-box"><i class='bx bx-trending-up'></i></div>
+                    <p>Saved This Year</p>
+                    <h2>₹186</h2>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- GRAPH -->
+        <div class="chart-box glass">
+            <h3>Spending Trend</h3>
+            <canvas id="myChart"></canvas>
+        </div>
+
+        <!-- BOTTOM SECTIONS -->
+        <div class="bottom-section">
+
+            <!-- UPCOMING -->
+            <div class="section glass">
+                <h3><i class='bx bx-calendar'></i> Upcoming Payments</h3>
+
+                <div class="list-item">
+                    <div class="left">
+                        <div class="circle"><i class='bx bx-credit-card'></i></div>
+                        <div>
+                            <div class="item-title">Netflix</div>
+                            <div class="item-sub">Apr 10, 2026</div>
+                        </div>
+                    </div>
+                    <div class="right">
+                        <div class="price">₹199</div>
+                        <div class="category">Entertainment</div>
+                    </div>
+                </div>
+
+                <div class="list-item">
+                    <div class="left">
+                        <div class="circle"><i class='bx bx-credit-card'></i></div>
+                        <div>
+                            <div class="item-title">Spotify</div>
+                            <div class="item-sub">Apr 12, 2026</div>
+                        </div>
+                    </div>
+                    <div class="right">
+                        <div class="price">₹99</div>
+                        <div class="category">Music</div>
+                    </div>
+                </div>
+
+                <div class="list-item">
+                    <div class="left">
+                        <div class="circle"><i class='bx bx-credit-card'></i></div>
+                        <div>
+                            <div class="item-title">AWS</div>
+                            <div class="item-sub">Apr 15, 2026</div>
+                        </div>
+                    </div>
+                    <div class="right">
+                        <div class="price">₹499</div>
+                        <div class="category">Cloud Services</div>
+                    </div>
+                </div>
+
+                <div class="list-item">
+                    <div class="left">
+                        <div class="circle" style="background: rgba(255, 0, 0, 0.2);">
+                            <i class='bx bx-error'></i>
+                        </div>
+                        <div>
+                            <div class="item-title">Adobe Creative Cloud</div>
+                            <div class="item-sub">Apr 18, 2026</div>
+                        </div>
+                    </div>
+                    <div class="right">
+                        <div class="price">₹249</div>
+                        <div class="category">Software</div>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- RECENT -->
+            <div class="section glass">
+                <h3>Recent Activity</h3>
+
+                <div class="list-item">
+                    <div class="left">
+                        <div class="circle" style="background: rgba(0, 255, 17, 0.111);"><i class='bx bx-bell'></i>
+                        </div>
+                        <div>
+                            <div class="item-title">Microsoft 365</div>
+                            <div class="item-sub">Renewed</div>
+                            <div class="item-sub">Apr 5, 2026</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="list-item">
+                    <div class="left">
+                        <div class="circle" style="background: rgba(0, 255, 17, 0.111);"><i class='bx bx-bell'></i>
+                        </div>
+                        <div>
+                            <div class="item-title">GitHub Pro</div>
+                            <div class="item-sub">Payment Processed</div>
+                            <div class="item-sub">Apr 3, 2026</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="list-item">
+                    <div class="left">
+                        <div class="circle" style="background: rgba(0, 255, 17, 0.111);"><i class='bx bx-bell'></i>
+                        </div>
+                        <div>
+                            <div class="item-title">Zoom</div>
+                            <div class="item-sub">Reminder Sent</div>
+                            <div class="item-sub">Apr 2, 2026</div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <script>
+
+        const ctx = document.getElementById('myChart').getContext('2d');
+
+        const gradient = ctx.createLinearGradient(0, 0, 0, 400);
+        gradient.addColorStop(0, 'rgba(139,92,246,0.6)');
+        gradient.addColorStop(1, 'rgba(139,92,246,0.05)');
+
+        new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
+                datasets: [{
+                    data: [450, 520, 480, 650, 590, 720],
+                    fill: true,
+                    tension: 0.4,
+                    borderColor: '#8b5cf6',
+                    backgroundColor: gradient,
+                    pointBackgroundColor: '#fff',
+                    pointBorderColor: '#8b5cf6',
+                    pointRadius: 5,
+                    pointHoverRadius: 8,
+                    pointHitRadius: 20
+                }]
+            },
+            options: {
+                maintainAspectRatio: false,
+                interaction: { mode: 'nearest', intersect: false },
+                plugins: {
+                    legend: { display: false },
+                    tooltip: {
+                        backgroundColor: '#0f172a',
+                        titleColor: '#fff',
+                        bodyColor: '#a78bfa',
+                        displayColors: false,
+                        callbacks: {
+                            title: (c) => c[0].label,
+                            label: (c) => 'Spending: ' + c.raw
+                        }
+                    }
+                },
+                scales: {
+                    x: { ticks: { color: '#fff' }, grid: { color: 'rgba(255,255,255,0.1)' } },
+                    y: { ticks: { color: '#fff' }, grid: { color: 'rgba(255,255,255,0.1)' } }
+                }
+            }
+        });
+
+    </script>
+
+</body>
+
+</html>

@@ -247,3 +247,70 @@ app.delete("/delete-user/:id", (req, res) => {
         });
     });
 });
+
+
+app.get("/dashboard-summary/:user_id", (req, res) => {
+    const user_id = req.params.user_id;
+
+    const sql = `
+        SELECT
+            SUM(CASE WHEN status = 'active' THEN 1 ELSE 0 END) AS activeSubscriptions,
+            COALESCE(SUM(CASE WHEN status = 'active' THEN amount ELSE 0 END), 0) AS monthlySpending,
+            SUM(
+                CASE
+                    WHEN status = 'active'
+                    AND renewal_date BETWEEN CURDATE() AND DATE_ADD(CURDATE(), INTERVAL 7 DAY)
+                    THEN 1
+                    ELSE 0
+                END
+            ) AS upcomingPayments
+        FROM subscription
+        WHERE user_id = ?
+    `;
+
+    db.query(sql, [user_id], (err, result) => {
+        if (err) {
+            console.log(err);
+            return res.status(500).json({ error: "Error loading dashboard summary" });
+        }
+
+        const summary = result[0] || {};
+        const monthlySpending = Number(summary.monthlySpending || 0);
+
+        res.json({
+            activeSubscriptions: Number(summary.activeSubscriptions || 0),
+            monthlySpending,
+            upcomingPayments: Number(summary.upcomingPayments || 0),
+            savedThisYear: Math.round(monthlySpending * 0.15)
+        });
+    });
+});
+
+app.get("/spending-trend/:user_id", (req, res) => {
+    const user_id = req.params.user_id;
+
+    const sql = `
+        SELECT
+            DATE_FORMAT(renewal_date, '%b') AS monthLabel,
+            MONTH(renewal_date) AS monthNumber,
+            YEAR(renewal_date) AS yearNumber,
+            COALESCE(SUM(amount), 0) AS total
+        FROM subscription
+        WHERE user_id = ?
+        GROUP BY YEAR(renewal_date), MONTH(renewal_date), DATE_FORMAT(renewal_date, '%b')
+        ORDER BY yearNumber, monthNumber
+        LIMIT 6
+    `;
+
+    db.query(sql, [user_id], (err, result) => {
+        if (err) {
+            console.log(err);
+            return res.status(500).json({ error: "Error loading spending trend" });
+        }
+
+        res.json({
+            labels: result.map((row) => row.monthLabel),
+            values: result.map((row) => Number(row.total || 0))
+        });
+    });
+});

@@ -16,3 +16,4 @@ CREATE TABLE IF NOT EXISTS subscription (
   renewal_date DATE,
   status VARCHAR(50) DEFAULT 'active'
 );
+

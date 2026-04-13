@@ -45,21 +45,22 @@
 
         <div class="row">
 
+            
             <div class="col">
                 <div class="card-box">
-                    <span class="percent green">+12%</span>
+                    <span class="percent green" id="activeTrend">Live</span>
                     <div class="icon-box blue"><i class='bx bx-layer'></i></div>
                     <p>Active Subscriptions</p>
-                    <h2>24</h2>
+                    <h2 id="activeSubscriptions">0</h2>
                 </div>
             </div>
 
             <div class="col">
                 <div class="card-box">
-                    <span class="percent red">-8%</span>
+                    <span class="percent red" id="monthlyTrend">Updated</span>
                     <div class="icon-box purple"><i class='bx bx-rupee'></i></div>
                     <p>Monthly Spending</p>
-                    <h2>₹720</h2>
+                    <h2 id="monthlySpending">₹0</h2>
                 </div>
             </div>
 
@@ -67,16 +68,16 @@
                 <div class="card-box">
                     <div class="icon-box yellow"><i class='bx bx-bell'></i></div>
                     <p>Upcoming Payments</p>
-                    <h2>8</h2>
+                    <h2 id="upcomingPaymentsCount">0</h2>
                 </div>
             </div>
 
             <div class="col">
                 <div class="card-box">
-                    <span class="percent green">+5%</span>
+                    <span class="percent green" id="savingsTrend">Tracked</span>
                     <div class="icon-box green-box"><i class='bx bx-trending-up'></i></div>
                     <p>Saved This Year</p>
-                    <h2>₹186</h2>
+                    <h2 id="savedThisYear">₹0</h2>
                 </div>
             </div>
 
@@ -95,132 +96,155 @@
             <div class="section glass">
                 <h3><i class='bx bx-calendar'></i> Upcoming Payments</h3>
 
-                <div class="list-item">
-                    <div class="left">
-                        <div class="circle"><i class='bx bx-credit-card'></i></div>
-                        <div>
-                            <div class="item-title">Netflix</div>
-                            <div class="item-sub">Apr 10, 2026</div>
+                <div id="upcomingPaymentsList">
+                    <div class="list-item">
+                        <div class="left">
+                            <div class="circle"><i class='bx bx-loader-alt'></i></div>
+                            <div>
+                                <div class="item-title">Loading upcoming payments...</div>
+                                <div class="item-sub">Please wait</div>
+                            </div>
                         </div>
-                    </div>
-                    <div class="right">
-                        <div class="price">₹199</div>
-                        <div class="category">Entertainment</div>
                     </div>
                 </div>
-
-                <div class="list-item">
-                    <div class="left">
-                        <div class="circle"><i class='bx bx-credit-card'></i></div>
-                        <div>
-                            <div class="item-title">Spotify</div>
-                            <div class="item-sub">Apr 12, 2026</div>
-                        </div>
-                    </div>
-                    <div class="right">
-                        <div class="price">₹99</div>
-                        <div class="category">Music</div>
-                    </div>
-                </div>
-
-                <div class="list-item">
-                    <div class="left">
-                        <div class="circle"><i class='bx bx-credit-card'></i></div>
-                        <div>
-                            <div class="item-title">AWS</div>
-                            <div class="item-sub">Apr 15, 2026</div>
-                        </div>
-                    </div>
-                    <div class="right">
-                        <div class="price">₹499</div>
-                        <div class="category">Cloud Services</div>
-                    </div>
-                </div>
-
-                <div class="list-item">
-                    <div class="left">
-                        <div class="circle" style="background: rgba(255, 0, 0, 0.2);">
-                            <i class='bx bx-error'></i>
-                        </div>
-                        <div>
-                            <div class="item-title">Adobe Creative Cloud</div>
-                            <div class="item-sub">Apr 18, 2026</div>
-                        </div>
-                    </div>
-                    <div class="right">
-                        <div class="price">₹249</div>
-                        <div class="category">Software</div>
-                    </div>
-                </div>
-
             </div>
+
 
             <!-- RECENT -->
             <div class="section glass">
                 <h3>Recent Activity</h3>
 
-                <div class="list-item">
-                    <div class="left">
-                        <div class="circle" style="background: rgba(0, 255, 17, 0.111);"><i class='bx bx-bell'></i>
-                        </div>
-                        <div>
-                            <div class="item-title">Microsoft 365</div>
-                            <div class="item-sub">Renewed</div>
-                            <div class="item-sub">Apr 5, 2026</div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="list-item">
-                    <div class="left">
-                        <div class="circle" style="background: rgba(0, 255, 17, 0.111);"><i class='bx bx-bell'></i>
-                        </div>
-                        <div>
-                            <div class="item-title">GitHub Pro</div>
-                            <div class="item-sub">Payment Processed</div>
-                            <div class="item-sub">Apr 3, 2026</div>
+                <div id="recentActivityList">
+                    <div class="list-item">
+                        <div class="left">
+                            <div class="circle" style="background: rgba(0, 255, 17, 0.111);"><i class='bx bx-loader-alt'></i></div>
+                            <div>
+                                <div class="item-title">Loading activity...</div>
+                                <div class="item-sub">Fetching recent subscriptions</div>
+                            </div>
                         </div>
                     </div>
                 </div>
-
-                <div class="list-item">
-                    <div class="left">
-                        <div class="circle" style="background: rgba(0, 255, 17, 0.111);"><i class='bx bx-bell'></i>
-                        </div>
-                        <div>
-                            <div class="item-title">Zoom</div>
-                            <div class="item-sub">Reminder Sent</div>
-                            <div class="item-sub">Apr 2, 2026</div>
-                        </div>
-                    </div>
-                </div>
-
             </div>
-
         </div>
 
     </div>
 
     <script>
+        const API_BASE_URL = "http://localhost:5000";
+        const userId = localStorage.getItem("user_id");
+        const upcomingPaymentsList = document.getElementById("upcomingPaymentsList");
+        const recentActivityList = document.getElementById("recentActivityList");
 
-        const ctx = document.getElementById('myChart').getContext('2d');
+        function formatCurrency(amount) {
+            return new Intl.NumberFormat("en-IN", {
+                style: "currency",
+                currency: "INR",
+                maximumFractionDigits: 0
+            }).format(Number(amount || 0));
+        }
+
+        function formatDate(dateValue) {
+            if (!dateValue) {
+                return "Date unavailable";
+            }
+
+            return new Date(dateValue).toLocaleDateString("en-IN", {
+                day: "numeric",
+                month: "short",
+                year: "numeric"
+            });
+        }
+
+        function showEmptyState(container, message, icon = "bx-info-circle") {
+            container.innerHTML = `
+                <div class="list-item">
+                    <div class="left">
+                        <div class="circle"><i class='bx ${icon}'></i></div>
+                        <div>
+                            <div class="item-title">${message}</div>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        function renderUpcomingPayments(items) {
+            if (!items || items.length === 0) {
+                showEmptyState(upcomingPaymentsList, "No upcoming payments in the next 7 days");
+                return;
+            }
+
+            upcomingPaymentsList.innerHTML = items.map((item) => `
+                <div class="list-item">
+                    <div class="left">
+                        <div class="circle"><i class='bx bx-credit-card'></i></div>
+                        <div>
+                            <div class="item-title">${item.name}</div>
+                            <div class="item-sub">${formatDate(item.renewal_date)}</div>
+                        </div>
+                    </div>
+                    <div class="right">
+                        <div class="price">${formatCurrency(item.amount)}</div>
+                        <div class="category">${item.status}</div>
+                    </div>
+                </div>
+            `).join("");
+        }
+
+        function renderRecentActivity(items) {
+            if (!items || items.length === 0) {
+                showEmptyState(recentActivityList, "No recent subscription activity", "bx-history");
+                return;
+            }
+
+            recentActivityList.innerHTML = items.map((item) => `
+                <div class="list-item">
+                    <div class="left">
+                        <div class="circle" style="background: rgba(0, 255, 17, 0.111);"><i class='bx bx-bell'></i></div>
+                        <div>
+                            <div class="item-title">${item.name}</div>
+                            <div class="item-sub">${item.status === "active" ? "Active subscription" : "Inactive subscription"}</div>
+                            <div class="item-sub">${formatDate(item.renewal_date)}</div>
+                        </div>
+                    </div>
+                </div>
+            `).join("");
+        }
+
+        function setSummaryCards(summary) {
+            document.getElementById("activeSubscriptions").textContent = summary.activeSubscriptions ?? 0;
+            document.getElementById("monthlySpending").textContent = formatCurrency(summary.monthlySpending);
+            document.getElementById("upcomingPaymentsCount").textContent = summary.upcomingPayments ?? 0;
+            document.getElementById("savedThisYear").textContent = formatCurrency(summary.savedThisYear);
+        }
+
+        function setGuestDashboard() {
+            document.getElementById("activeTrend").textContent = "Login required";
+            document.getElementById("monthlyTrend").textContent = "Login required";
+            document.getElementById("savingsTrend").textContent = "Login required";
+            showEmptyState(upcomingPaymentsList, "Please log in to see your subscriptions", "bx-lock-alt");
+            showEmptyState(recentActivityList, "Please log in to see your activity", "bx-lock-alt");
+        }
+
+        const ctx = document.getElementById("myChart").getContext("2d");
 
         const gradient = ctx.createLinearGradient(0, 0, 0, 400);
-        gradient.addColorStop(0, 'rgba(139,92,246,0.6)');
-        gradient.addColorStop(1, 'rgba(139,92,246,0.05)');
+        gradient.addColorStop(0, "rgba(139,92,246,0.6)");
+        gradient.addColorStop(1, "rgba(139,92,246,0.05)");
 
-        new Chart(ctx, {
-            type: 'line',
+        const spendingChart = new Chart(ctx, {
+            type: "line",
             data: {
-                labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
+                labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun"],
                 datasets: [{
-                    data: [450, 520, 480, 650, 590, 720],
+                    data: [0, 0, 0, 0, 0, 0],
                     fill: true,
                     tension: 0.4,
-                    borderColor: '#8b5cf6',
+                    borderColor: "#8b5cf6",
                     backgroundColor: gradient,
-                    pointBackgroundColor: '#fff',
-                    pointBorderColor: '#8b5cf6',
+                    pointBackgroundColor: "#fff",
+                    pointBorderColor: "#8b5cf6",
                     pointRadius: 5,
                     pointHoverRadius: 8,
                     pointHitRadius: 20
@@ -228,27 +252,66 @@
             },
             options: {
                 maintainAspectRatio: false,
-                interaction: { mode: 'nearest', intersect: false },
+                interaction: { mode: "nearest", intersect: false },
                 plugins: {
                     legend: { display: false },
                     tooltip: {
-                        backgroundColor: '#0f172a',
-                        titleColor: '#fff',
-                        bodyColor: '#a78bfa',
+                        backgroundColor: "#0f172a",
+                        titleColor: "#fff",
+                        bodyColor: "#a78bfa",
                         displayColors: false,
                         callbacks: {
-                            title: (c) => c[0].label,
-                            label: (c) => 'Spending: ' + c.raw
+                            title: (context) => context[0].label,
+                            label: (context) => `Spending: ${formatCurrency(context.raw)}`
                         }
                     }
                 },
                 scales: {
-                    x: { ticks: { color: '#fff' }, grid: { color: 'rgba(255,255,255,0.1)' } },
-                    y: { ticks: { color: '#fff' }, grid: { color: 'rgba(255,255,255,0.1)' } }
+                    x: { ticks: { color: "#fff" }, grid: { color: "rgba(255,255,255,0.1)" } },
+                    y: { ticks: { color: "#fff" }, grid: { color: "rgba(255,255,255,0.1)" } }
                 }
             }
         });
 
+        async function loadDashboard() {
+            if (!userId) {
+                setGuestDashboard();
+                return;
+            }
+
+            try {
+                const [summaryResponse, remindersResponse, subscriptionsResponse, trendResponse] = await Promise.all([
+                    fetch(`${API_BASE_URL}/dashboard-summary/${userId}`),
+                    fetch(`${API_BASE_URL}/reminders/${userId}`),
+                    fetch(`${API_BASE_URL}/subscriptions/${userId}`),
+                    fetch(`${API_BASE_URL}/spending-trend/${userId}`)
+                ]);
+
+                const summary = await summaryResponse.json();
+                const reminders = await remindersResponse.json();
+                const subscriptions = await subscriptionsResponse.json();
+                const trend = await trendResponse.json();
+
+                setSummaryCards(summary);
+                renderUpcomingPayments(reminders.upcoming_renewals || []);
+                renderRecentActivity(Array.isArray(subscriptions) ? subscriptions.slice(0, 3) : []);
+
+                if (trend.labels && trend.values) {
+                    spendingChart.data.labels = trend.labels;
+                    spendingChart.data.datasets[0].data = trend.values;
+                    spendingChart.update();
+                }
+            } catch (error) {
+                console.error("Dashboard load error:", error);
+                document.getElementById("activeTrend").textContent = "Server error";
+                document.getElementById("monthlyTrend").textContent = "Server error";
+                document.getElementById("savingsTrend").textContent = "Server error";
+                showEmptyState(upcomingPaymentsList, "Could not load dashboard data", "bx-error-circle");
+                showEmptyState(recentActivityList, "Backend connection failed", "bx-wifi-off");
+            }
+        }
+
+        loadDashboard();
     </script>
 
 </body>
