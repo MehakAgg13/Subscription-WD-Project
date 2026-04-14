@@ -1,417 +1,453 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-<meta charset="UTF-8">
-<title>Add Subscription</title>
+    <meta charset="UTF-8">
+    <title>Add Subscription</title>
 
-<link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
 
-<style>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
 
+        body {
+            min-height: 100vh;
+            background: url('../images/loginbg.jpg') no-repeat;
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+        }
 
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    font-family: 'Poppins', sans-serif;
-}
-
-body {
-    min-height: 100vh;
-    background: url('../images/loginbg.jpg') no-repeat;
-    background-size: cover;
-    background-position: center;
-    background-attachment: fixed;
-}
-
-body::before {
-    content: "";
-    position: fixed;
-    width: 100%;
-    height: 100%;
-    background: rgba(0,0,0,0.5);
-    top: 0;
-    left: 0;
-    z-index: 0;
-}
+        body::before {
+            content: "";
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            top: 0;
+            left: 0;
+            z-index: 0;
+        }
 
 
-.sidebar {
-    position: fixed;
-    z-index: 1;
-    width: 240px;
-    height: 100vh;
-    padding: 25px;
-    background: rgba(255,255,255,0.1);
-    border-right: 2px solid rgba(255,255,255,0.2);
-    backdrop-filter: blur(15px);
-    color: white;
-}
+        .sidebar {
+            position: fixed;
+            z-index: 1;
+            width: 240px;
+            height: 100vh;
+            padding: 25px;
+            background: rgba(255, 255, 255, 0.1);
+            border-right: 2px solid rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(15px);
+            color: white;
+        }
 
-.logo { font-size: 22px; font-weight: 600; }
+        .logo {
+            font-size: 22px;
+            font-weight: 600;
+        }
 
-.subtitle { font-size: 13px; margin-bottom: 30px; color: #ddd; }
+        .subtitle {
+            font-size: 13px;
+            margin-bottom: 30px;
+            color: #ddd;
+        }
 
-.sidebar a {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    padding: 12px;
-    border-radius: 25px;
-    text-decoration: none;
-    color: #fff;
-    margin-bottom: 10px;
-    transition: 0.3s;
-}
+        .sidebar a {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 12px;
+            border-radius: 25px;
+            text-decoration: none;
+            color: #fff;
+            margin-bottom: 10px;
+            transition: 0.3s;
+        }
 
-.sidebar a:hover { background: rgba(255,255,255,0.2); }
+        .sidebar a:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
 
-.active { background: rgba(255,255,255,0.25); }
-
-
-.main {
-    margin-left: 260px;
-    padding: 40px;
-    position: relative;
-    z-index: 1;
-    color: white;
-}
-
-
-.glass {
-    background: rgba(255,255,255,0.1);
-    border: 2px solid rgba(255,255,255,0.2);
-    backdrop-filter: blur(15px);
-    border-radius: 15px;
-    padding: 30px;
-    margin-bottom: 20px;
-}
+        .active {
+            background: rgba(255, 255, 255, 0.25);
+        }
 
 
-.row {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 30px;
-    margin-bottom: 32px;
-}
-
-.form-group {
-    display: flex;
-    flex-direction: column;
-    gap: 6px;
-    margin-bottom: 32px;
-    position: relative;
-}
-
-label {
-    font-weight: 500;
-}
+        .main {
+            margin-left: 260px;
+            padding: 40px;
+            position: relative;
+            z-index: 1;
+            color: white;
+        }
 
 
-
-input, select, textarea {
-    width: 100%;
-    padding: 12px;
-    border-radius: 10px;
-    border: 2px solid rgba(255,255,255,0.2);
-    background: rgba(255,255,255,0.1);
-    color: white;
-    outline: none;
-}
-
-input::placeholder, textarea::placeholder {
-    color: #ddd;
-}
-
-/* DATE FIX */
-input[type="date"] {
-    color-scheme: dark;
-}
-
-/* BUTTONS */
-.btn-row {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 20px;
-}
-
-.btn-primary {
-    padding: 14px;
-    border-radius: 25px;
-    border: none;
-    background: #fff;
-    color: #333;
-    font-weight: 600;
-    cursor: pointer;
-}
-
-.btn-secondary {
-    padding: 14px;
-    border-radius: 25px;
-    border: 2px solid rgba(255,255,255,0.2);
-    background: rgba(255,255,255,0.1);
-    backdrop-filter: blur(15px);
-    color: #fff;
-    font-weight: 600;
-    cursor: pointer;
-}
+        .glass {
+            background: rgba(255, 255, 255, 0.1);
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(15px);
+            border-radius: 15px;
+            padding: 30px;
+            margin-bottom: 20px;
+        }
 
 
-.custom-select {
-    padding: 12px;
-    border-radius: 10px;
-    border: 2px solid rgba(255,255,255,0.2);
-    background: rgba(255,255,255,0.1);
-    display: flex;
-    justify-content: space-between;
-    cursor: pointer;
-}
+        .row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            margin-bottom: 32px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            margin-bottom: 32px;
+            position: relative;
+        }
+
+        label {
+            font-weight: 500;
+        }
 
 
-.dropdown {
-    position: absolute;
-    top: 100%;
-    left: 0;
-    width: 100%;
-    margin-top: 6px;
 
-    max-height: 220px;
-    overflow-y: auto;
+        input,
+        select,
+        textarea {
+            width: 100%;
+            padding: 12px;
+            border-radius: 10px;
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            outline: none;
+        }
 
-    background: rgba(47, 45, 45, 0.945);
-    border: 2px solid rgba(255,255,255,0.2);
-    backdrop-filter: blur(15px);
+        input::placeholder,
+        textarea::placeholder {
+            color: #ddd;
+        }
 
-    border-radius: 12px;
-    display: none;
-    z-index: 100;
+        /* DATE FIX */
+        input[type="date"] {
+            color-scheme: dark;
+        }
 
-    box-shadow: 0 10px 30px rgba(0,0,0,0.3);
-}
+        /* BUTTONS */
+        .btn-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
 
-.dropdown div {
-    padding: 12px;
-    cursor: pointer;
-    color: #fff;
-    transition: all 0.25s ease;
-}
+        .btn-primary {
+            padding: 14px;
+            border-radius: 25px;
+            border: none;
+            background: #fff;
+            color: #333;
+            font-weight: 600;
+            cursor: pointer;
+        }
 
-.dropdown div:hover {
-    background: rgba(0, 0, 0, 0.8); /* slightly transparent black */
-    color: #fff;
-    border-radius: 6px;
-}
+        .btn-secondary {
+            padding: 14px;
+            border-radius: 25px;
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(15px);
+            color: #fff;
+            font-weight: 600;
+            cursor: pointer;
+        }
 
-</style>
+
+        .custom-select {
+            padding: 12px;
+            border-radius: 10px;
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            background: rgba(255, 255, 255, 0.1);
+            display: flex;
+            justify-content: space-between;
+            cursor: pointer;
+        }
+
+
+        .dropdown {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            width: 100%;
+            margin-top: 6px;
+
+            max-height: 220px;
+            overflow-y: auto;
+
+            background: rgba(47, 45, 45, 0.945);
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(15px);
+
+            border-radius: 12px;
+            display: none;
+            z-index: 100;
+
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        }
+
+        .dropdown div {
+            padding: 12px;
+            cursor: pointer;
+            color: #fff;
+            transition: all 0.25s ease;
+        }
+
+        .dropdown div:hover {
+            background: rgba(0, 0, 0, 0.8);
+            /* slightly transparent black */
+            color: #fff;
+            border-radius: 6px;
+        }
+    </style>
 </head>
 
 <body>
 
-<!-- SIDEBAR -->
-<div class="sidebar">
-    <div class="logo">🔔 SubRemind</div>
-    <div class="subtitle">Smart Billing Reminders</div>
+    <!-- SIDEBAR -->
+    <div class="sidebar">
+        <div class="logo">🔔 SubRemind</div>
+        <div class="subtitle">Smart Billing Reminders</div>
 
-    <a href="firstpage.html"><i class='bx bxs-dashboard'></i> Dashboard</a>
-    <a><i class='bx bx-credit-card'></i> Subscriptions</a>
-    <a class="active"><i class='bx bx-plus'></i> Add New</a>
-    <a href="reminders.html"><i class='bx bx-bell'></i> Reminders</a>
-    <a href="settings.html"><i class='bx bx-cog'></i> Settings</a>
+        <a href="firstpage.html"><i class='bx bxs-dashboard'></i> Dashboard</a>
+        <a><i class='bx bx-credit-card'></i> Subscriptions</a>
+        <a class="active"><i class='bx bx-plus'></i> Add New</a>
+        <a href="reminders.html"><i class='bx bx-bell'></i> Reminders</a>
+        <a href="settings.html"><i class='bx bx-cog'></i> Settings</a>
 
-    <div style="position:absolute; bottom:20px;">
-        <a href="login.html"><i class='bx bx-log-out'></i> Logout</a>
+        <div style="position:absolute; bottom:20px;">
+            <a href="login.html"><i class='bx bx-log-out'></i> Logout</a>
+        </div>
     </div>
-</div>
 
-<!-- MAIN -->
-<div class="main">
+    <!-- MAIN -->
+    <div class="main">
 
-<div class="glass">
-    <h1>Add New Subscription</h1>
-    <p>Keep track of your recurring payments</p>
-</div>
+        <div class="glass">
+            <h1>Add New Subscription</h1>
+            <p>Keep track of your recurring payments</p>
+        </div>
 
-<div class="glass">
+        <div class="glass">
 
-<div class="form-group">
-    <label>Service Name *</label>
-    <input type="text" id="name" placeholder="e.g., Netflix, Spotify, Adobe">
-</div>
+            <div class="form-group">
+                <label>Service Name *</label>
+                <input type="text" id="name" placeholder="e.g., Netflix, Spotify, Adobe">
+            </div>
 
-<div class="row">
+            <div class="row">
 
-<div class="form-group">
-<label><i class='bx bx-tag'></i> Category *</label>
+                <div class="form-group">
+                    <label><i class='bx bx-tag'></i> Category *</label>
 
-<div class="custom-select" onclick="toggleDropdown(event)">
-    <span id="selected">Select a category</span>
-    <i class='bx bx-chevron-down'></i>
-</div>
+                    <div class="custom-select" onclick="toggleDropdown(event)">
+                        <span id="selected">Select a category</span>
+                        <i class='bx bx-chevron-down'></i>
+                    </div>
 
-<div id="dropdown" class="dropdown">
-    <div onclick="selectOption('Entertainment')">Entertainment</div>
-    <div onclick="selectOption('Music')">Music</div>
-    <div onclick="selectOption('Software')">Software</div>
-    <div onclick="selectOption('Cloud Services')">Cloud Services</div>
-    <div onclick="selectOption('Developer Tools')">Developer Tools</div>
-    <div onclick="selectOption('Communication')">Communication</div>
-    <div onclick="selectOption('Productivity')">Productivity</div>
-    <div onclick="selectOption('Cloud Storage')">Cloud Storage</div>
-    <div onclick="selectOption('Education')">Education</div>
-    <div onclick="selectOption('Fitness')">Fitness</div>
-    <div onclick="selectOption('Other')">Other</div>
-</div>
+                    <div id="dropdown" class="dropdown">
+                        <div onclick="selectOption('Entertainment')">Entertainment</div>
+                        <div onclick="selectOption('Music')">Music</div>
+                        <div onclick="selectOption('Software')">Software</div>
+                        <div onclick="selectOption('Cloud Services')">Cloud Services</div>
+                        <div onclick="selectOption('Developer Tools')">Developer Tools</div>
+                        <div onclick="selectOption('Communication')">Communication</div>
+                        <div onclick="selectOption('Productivity')">Productivity</div>
+                        <div onclick="selectOption('Cloud Storage')">Cloud Storage</div>
+                        <div onclick="selectOption('Education')">Education</div>
+                        <div onclick="selectOption('Fitness')">Fitness</div>
+                        <div onclick="selectOption('Other')">Other</div>
+                    </div>
 
-</div>
+                </div>
 
-<div class="form-group">
-<label><i class='bx bx-rupee'></i> Amount *</label>
-<input type="number" id="amount" placeholder="0.00">
-</div>
+                <div class="form-group">
+                    <label><i class='bx bx-rupee'></i> Amount *</label>
+                    <input type="number" id="amount" placeholder="0.00">
+                </div>
 
-</div>
+            </div>
 
-<div class="row">
-<div class="form-group">
-<label>Billing Cycle</label>
+            <div class="row">
+                <div class="form-group">
+                    <label>Billing Cycle</label>
 
-<div class="custom-select" onclick="toggleBilling(event)">
-    <span id="billingSelected">Monthly</span>
-    <i class='bx bx-chevron-down'></i>
-</div>
+                    <div class="custom-select" onclick="toggleBilling(event)">
+                        <span id="billingSelected">Monthly</span>
+                        <i class='bx bx-chevron-down'></i>
+                    </div>
 
-<div id="billingDropdown" class="dropdown">
-    <div onclick="selectBilling('Monthly')">Monthly</div>
-    <div onclick="selectBilling('Quarterly')">Quarterly</div>
-    <div onclick="selectBilling('Yearly')">Yearly</div>
-</div>
+                    <div id="billingDropdown" class="dropdown">
+                        <div onclick="selectBilling('Monthly')">Monthly</div>
+                        <div onclick="selectBilling('Quarterly')">Quarterly</div>
+                        <div onclick="selectBilling('Yearly')">Yearly</div>
+                    </div>
 
-</div>
+                </div>
 
-<div class="form-group">
-<label><i class='bx bx-calendar'></i> Start Date *</label>
-<input type="date" id="date">
-</div>
+                <div class="form-group">
+                    <label><i class='bx bx-calendar'></i> Start Date *</label>
+                    <input type="date" id="date">
+                </div>
 
-</div>
+            </div>
 
 
-<div class="form-group">
-<label>Remind me before (days)</label>
+            <div class="form-group">
+                <label>Remind me before (days)</label>
 
-<div class="custom-select" onclick="toggleReminder(event)">
-    <span id="reminderSelected">3 days before</span>
-    <i class='bx bx-chevron-down'></i>
-</div>
+                <div class="custom-select" onclick="toggleReminder(event)">
+                    <span id="reminderSelected">3 days before</span>
+                    <i class='bx bx-chevron-down'></i>
+                </div>
 
-<div id="reminderDropdown" class="dropdown">
-    <div onclick="selectReminder('3 days before')">3 days before</div>
-    <div onclick="selectReminder('5 days before')">5 days before</div>
-    <div onclick="selectReminder('7 days before')">7 days before</div>
-</div>
+                <div id="reminderDropdown" class="dropdown">
+                    <div onclick="selectReminder('3 days before')">3 days before</div>
+                    <div onclick="selectReminder('5 days before')">5 days before</div>
+                    <div onclick="selectReminder('7 days before')">7 days before</div>
+                </div>
 
-</div>
+            </div>
 
-<div class="form-group">
-<label><i class='bx bx-file'></i> Notes (Optional)</label>
-<textarea rows="5" placeholder="Add any additional notes..."></textarea>
-</div>
+            <div class="form-group">
+                <label><i class='bx bx-file'></i> Notes (Optional)</label>
+                <textarea id="notes" rows="5" placeholder="Add any additional notes..."></textarea>
+            </div>
 
-<div class="btn-row">
-<button class="btn-primary" onclick="addSubscription()">Add Subscription</button>
-<button class="btn-secondary" onclick="window.location.href='firstpage.html'">Cancel</button>
-</div>
+            <div class="btn-row">
+                <button class="btn-primary" onclick="addSubscription()">Add Subscription</button>
+                <button class="btn-secondary" onclick="window.location.href='firstpage.html'">Cancel</button>
+            </div>
 
-</div>
+        </div>
 
-</div>
+    </div>
 
-<script>
-function toggleDropdown(e) {
-    e.stopPropagation();
-    let d = document.getElementById("dropdown");
-    d.style.display = d.style.display === "block" ? "none" : "block";
-}
+    <script>
+        const API_BASE_URL = "http://localhost:5000";
 
-function selectOption(value) {
-    document.getElementById("selected").innerText = value;
-    document.getElementById("dropdown").style.display = "none";
-}
+        function toggleDropdown(e) {
+            e.stopPropagation();
+            const d = document.getElementById("dropdown");
+            d.style.display = d.style.display === "block" ? "none" : "block";
+        }
 
-function toggleBilling(e) {
-    e.stopPropagation();
-    let d = document.getElementById("billingDropdown");
-    d.style.display = d.style.display === "block" ? "none" : "block";
-}
+        function selectOption(value) {
+            document.getElementById("selected").innerText = value;
+            document.getElementById("dropdown").style.display = "none";
+        }
 
-function selectBilling(value) {
-    document.getElementById("billingSelected").innerText = value;
-    document.getElementById("billingDropdown").style.display = "none";
-}
+        function toggleBilling(e) {
+            e.stopPropagation();
+            const d = document.getElementById("billingDropdown");
+            d.style.display = d.style.display === "block" ? "none" : "block";
+        }
 
-function toggleReminder(e) {
-    e.stopPropagation();
-    let d = document.getElementById("reminderDropdown");
-    d.style.display = d.style.display === "block" ? "none" : "block";
-}
+        function selectBilling(value) {
+            document.getElementById("billingSelected").innerText = value;
+            document.getElementById("billingDropdown").style.display = "none";
+        }
 
-function selectReminder(value) {
-    document.getElementById("reminderSelected").innerText = value;
-    document.getElementById("reminderDropdown").style.display = "none";
-}
+        function toggleReminder(e) {
+            e.stopPropagation();
+            const d = document.getElementById("reminderDropdown");
+            d.style.display = d.style.display === "block" ? "none" : "block";
+        }
 
-window.addEventListener("click", function() {
-    document.getElementById("dropdown").style.display = "none";          // category
-    document.getElementById("billingDropdown").style.display = "none";   // billing
-    document.getElementById("reminderDropdown").style.display = "none";  // reminder
-});
+        function selectReminder(value) {
+            document.getElementById("reminderSelected").innerText = value;
+            document.getElementById("reminderDropdown").style.display = "none";
+        }
 
-async function addSubscription() {
-  const name = document.getElementById("name").value;
-  const amount = document.getElementById("amount").value;
-  const renewal_date = document.getElementById("date").value;
-  const status = "active";
+        function parseReminderDays(reminderLabel) {
+            return Number(reminderLabel.split(" ")[0]);
+        }
 
-  const user_id = parseInt(localStorage.getItem("user_id"));
+        window.addEventListener("click", function () {
+            document.getElementById("dropdown").style.display = "none";
+            document.getElementById("billingDropdown").style.display = "none";
+            document.getElementById("reminderDropdown").style.display = "none";
+        });
 
-  if (!user_id) {
-    alert("Please login first");
-    window.location.href = "login.html";
-    return;
-  }
-  if (!name || !amount || !renewal_date) {
-    alert("All fields are required");
-    return;
-  }
+        async function addSubscription() {
 
-  console.log({ user_id, name, amount, renewal_date, status });
+            const name = document.getElementById("name").value.trim();
+            const category = document.getElementById("selected").innerText;
+            const amount = document.getElementById("amount").value;
+            const billing_cycle = document.getElementById("billingSelected").innerText;
+            const start_date = document.getElementById("date").value;
+            const reminderLabel = document.getElementById("reminderSelected").innerText;
+            const remind_before = parseReminderDays(reminderLabel);
+            const notes = document.querySelector("textarea").value.trim();
+            const user_id = parseInt(localStorage.getItem("user_id"), 10);
+            const status = "active";
 
-  try {
-    const response = await fetch("http://localhost:5000/add-subscription", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify({
-        user_id,
-        name,
-        amount,
-        renewal_date,
-        status
-      })
-    });
+            const renewal_date = start_date; // same for now
 
-    const result = await response.text();
-    alert(result);
+            if (!user_id) {
+                alert("Please login first");
+                return;
+            }
 
-  } catch (error) {
-    console.log(error);
-    alert("Something went wrong");
-  }
-}
+            if (!name || category === "Select a category" || !amount || !start_date) {
+                alert("Please fill all required fields");
+                return;
+            }
 
-</script>
+            try {
+                const response = await fetch(`${API_BASE_URL}/add-subscription`, {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({
+                        user_id,
+                        name,
+                        category,
+                        amount,
+                        billing_cycle,
+                        start_date,
+                        renewal_date,
+                        remind_before,
+                        notes,
+                        status
+                    })
+                });
+
+                const result = await response.text();
+
+                if (!response.ok) {
+                    alert(result);
+                    return;
+                }
+
+                alert("Subscription Added Successfully!");
+                window.location.href = "firstpage.html";
+
+            } catch (error) {
+                console.log(error);
+                alert("Server not running");
+            }
+        }
+    </script>
 
 </body>
+
 </html>

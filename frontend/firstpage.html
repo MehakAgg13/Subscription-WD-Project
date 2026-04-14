@@ -45,7 +45,7 @@
 
         <div class="row">
 
-            
+
             <div class="col">
                 <div class="card-box">
                     <span class="percent green" id="activeTrend">Live</span>
@@ -117,7 +117,8 @@
                 <div id="recentActivityList">
                     <div class="list-item">
                         <div class="left">
-                            <div class="circle" style="background: rgba(0, 255, 17, 0.111);"><i class='bx bx-loader-alt'></i></div>
+                            <div class="circle" style="background: rgba(0, 255, 17, 0.111);"><i
+                                    class='bx bx-loader-alt'></i></div>
                             <div>
                                 <div class="item-title">Loading activity...</div>
                                 <div class="item-sub">Fetching recent subscriptions</div>
@@ -181,7 +182,7 @@
                         <div class="circle"><i class='bx bx-credit-card'></i></div>
                         <div>
                             <div class="item-title">${item.name}</div>
-                            <div class="item-sub">${formatDate(item.renewal_date)}</div>
+                            <div class="item-sub">${formatDate(item.next_payment_date)}</div>
                         </div>
                     </div>
                     <div class="right">
@@ -274,42 +275,46 @@
         });
 
         async function loadDashboard() {
-            if (!userId) {
-                setGuestDashboard();
-                return;
-            }
+    if (!userId) {
+        setGuestDashboard();
+        return;
+    }
 
-            try {
-                const [summaryResponse, remindersResponse, subscriptionsResponse, trendResponse] = await Promise.all([
-                    fetch(`${API_BASE_URL}/dashboard-summary/${userId}`),
-                    fetch(`${API_BASE_URL}/reminders/${userId}`),
-                    fetch(`${API_BASE_URL}/subscriptions/${userId}`),
-                    fetch(`${API_BASE_URL}/spending-trend/${userId}`)
-                ]);
+    try {
+        const [summaryResponse, remindersResponse, subscriptionsResponse, trendResponse] = await Promise.all([
+            fetch(`${API_BASE_URL}/dashboard-summary/${userId}`),
+            fetch(`${API_BASE_URL}/reminders/${userId}`),
+            fetch(`${API_BASE_URL}/subscriptions/${userId}`),
+            fetch(`${API_BASE_URL}/spending-trend/${userId}`)
+        ]);
 
-                const summary = await summaryResponse.json();
-                const reminders = await remindersResponse.json();
-                const subscriptions = await subscriptionsResponse.json();
-                const trend = await trendResponse.json();
+        const summary = await summaryResponse.json();
+        const reminders = await remindersResponse.json();
+        const subscriptions = await subscriptionsResponse.json();
+        const trend = await trendResponse.json();
 
-                setSummaryCards(summary);
-                renderUpcomingPayments(reminders.upcoming_renewals || []);
-                renderRecentActivity(Array.isArray(subscriptions) ? subscriptions.slice(0, 3) : []);
+        // ✅ Cards
+        setSummaryCards(summary);
 
-                if (trend.labels && trend.values) {
-                    spendingChart.data.labels = trend.labels;
-                    spendingChart.data.datasets[0].data = trend.values;
-                    spendingChart.update();
-                }
-            } catch (error) {
-                console.error("Dashboard load error:", error);
-                document.getElementById("activeTrend").textContent = "Server error";
-                document.getElementById("monthlyTrend").textContent = "Server error";
-                document.getElementById("savingsTrend").textContent = "Server error";
-                showEmptyState(upcomingPaymentsList, "Could not load dashboard data", "bx-error-circle");
-                showEmptyState(recentActivityList, "Backend connection failed", "bx-wifi-off");
-            }
+        // ✅ Upcoming payments
+        renderUpcomingPayments(reminders.upcoming_renewals || []);
+
+        // ✅ Recent activity (REMOVE LIMIT FOR TESTING SCROLL)
+        renderRecentActivity(Array.isArray(subscriptions) ? subscriptions : []);
+
+        // ✅ Chart
+        if (trend.labels && trend.values) {
+            spendingChart.data.labels = trend.labels;
+            spendingChart.data.datasets[0].data = trend.values;
+            spendingChart.update();
         }
+
+    } catch (error) {
+        console.error("Dashboard load error:", error);
+        showEmptyState(upcomingPaymentsList, "Could not load dashboard data");
+        showEmptyState(recentActivityList, "Backend connection failed");
+    }
+}
 
         loadDashboard();
     </script>

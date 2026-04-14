@@ -17,3 +17,19 @@ CREATE TABLE IF NOT EXISTS subscription (
   status VARCHAR(50) DEFAULT 'active'
 );
 
+CREATE TABLE IF NOT EXISTS subscription_details (
+    detail_id INT AUTO_INCREMENT PRIMARY KEY,
+    subscription_id INT NOT NULL,
+    category VARCHAR(100) DEFAULT NULL,
+    billing_cycle ENUM('Monthly', 'Quarterly', 'Yearly') NOT NULL DEFAULT 'Monthly',
+    start_date DATE NOT NULL,
+    remind_before INT NOT NULL DEFAULT 7,
+    notes TEXT,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    CONSTRAINT fk_subscription_details_subscription
+        FOREIGN KEY (subscription_id) REFERENCES subscription(id)
+        ON DELETE CASCADE,
+    CONSTRAINT uq_subscription_details_subscription UNIQUE (subscription_id),
+    CONSTRAINT chk_subscription_details_reminder CHECK (remind_before IN (3, 5, 7))
+);

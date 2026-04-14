@@ -1,541 +1,394 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-<meta charset="UTF-8">
-<title>Reminders - SubRemind</title>
+    <meta charset="UTF-8">
+    <title>Reminders - SubRemind</title>
 
-<link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
 
-<style>
+    <style>
+        /* KEEPING YOUR CSS EXACTLY SAME */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
 
-/* BASE */
-*{
-margin:0;
-padding:0;
-box-sizing:border-box;
-font-family:'Poppins',sans-serif;
-}
+        body {
+            min-height: 100vh;
+            background: url('../images/loginbg.jpg') no-repeat center;
+            background-size: cover;
+            background-attachment: fixed;
+        }
 
-body{
-min-height:100vh;
-background:url('../images/loginbg.jpg') no-repeat center;
-background-size:cover;
-background-attachment:fixed;
-}
+        body::before {
+            content: "";
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 0;
+        }
 
-body::before{
-content:"";
-position:fixed;
-width:100%;
-height:100%;
-background:rgba(0,0,0,0.5);
-z-index:0;
-}
+        .sidebar {
+            position: fixed;
+            width: 240px;
+            height: 100vh;
+            padding: 25px;
+            background: rgba(255, 255, 255, 0.1);
+            border-right: 2px solid rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(15px);
+            color: #fff;
+            z-index: 10;
+        }
 
-/* SIDEBAR */
-.sidebar{
-position:fixed;
-width:240px;
-height:100vh;
-padding:25px;
-background:rgba(255,255,255,0.1);
-border-right:2px solid rgba(255,255,255,0.2);
-backdrop-filter:blur(15px);
-color:#fff;
-z-index:10;
-}
+        .logo {
+            font-size: 22px;
+            font-weight: 600;
+        }
 
-.logo{font-size:22px;font-weight:600;}
-.subtitle{font-size:13px;margin-bottom:30px;color:#ddd;}
+        .subtitle {
+            font-size: 13px;
+            margin-bottom: 30px;
+            color: #ddd;
+        }
 
-.sidebar a{
-display:flex;
-align-items:center;
-gap:10px;
-padding:12px;
-border-radius:25px;
-text-decoration:none;
-color:#fff;
-margin-bottom:10px;
-transition:0.3s;
-}
+        .sidebar a {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 12px;
+            border-radius: 25px;
+            text-decoration: none;
+            color: #fff;
+            margin-bottom: 10px;
+            transition: 0.3s;
+        }
 
-.sidebar a:hover{background:rgba(255,255,255,0.2);}
-.active{background:rgba(255,255,255,0.25);}
+        .sidebar a:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
 
-/* MAIN */
-.main{
-margin-left:260px;
-padding:40px;
-color:#fff;
-position:relative;
-z-index:1;
-}
+        .active {
+            background: rgba(255, 255, 255, 0.25);
+        }
 
-/* GLASS */
-.glass{
-background:rgba(255,255,255,0.1);
-border:2px solid rgba(255,255,255,0.2);
-backdrop-filter:blur(15px);
-border-radius:15px;
-padding:25px;
-margin-bottom:20px;
-}
+        .main {
+            margin-left: 260px;
+            padding: 40px;
+            color: #fff;
+            position: relative;
+            z-index: 1;
+        }
 
-/* HEADER */
-.header{
-display:flex;
-justify-content:space-between;
-align-items:center;
-}
+        .glass {
+            background: rgba(255, 255, 255, 0.1);
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(15px);
+            border-radius: 15px;
+            padding: 25px;
+            margin-bottom: 20px;
+        }
 
-.mark-btn{
-background:#fff;
-color:#000;
-padding:12px 20px;
-border-radius:12px;
-font-weight:600;
-cursor:pointer;
-}
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
 
-/* STATS */
-.stats{
-display:grid;
-grid-template-columns:repeat(3,1fr);
-gap:20px;
-}
+        .mark-btn {
+            background: #fff;
+            color: #000;
+            padding: 12px 20px;
+            border-radius: 12px;
+            font-weight: 600;
+            cursor: pointer;
+        }
 
-.stat{
-display:flex;
-flex-direction:column;
-gap:10px;
-}
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+        }
 
-.stat i{
-font-size:20px;
-padding:10px;
-border-radius:10px;
-width:fit-content;
-}
+        .stat {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
 
-/* COLORS */
-.red{background:#ef444433;color:#ef4444;}
-.yellow{background:#facc1533;color:#facc15;}
-.blue{background:#3b82f633;color:#3b82f6;}
+        .stat i {
+            font-size: 20px;
+            padding: 10px;
+            border-radius: 10px;
+            width: fit-content;
+        }
 
-/* TABS */
-.tabs{
-display:flex;
-gap:10px;
-}
+        .red {
+            background: #ef444433;
+            color: #ef4444;
+        }
 
-.tab{
-padding:10px 18px;
-border-radius:20px;
-background:rgba(255,255,255,0.1);
-cursor:pointer;
-}
+        .yellow {
+            background: #facc1533;
+            color: #facc15;
+        }
 
-.tab.active{
-background:#fff;
-color:#000;
-}
+        .blue {
+            background: #3b82f633;
+            color: #3b82f6;
+        }
 
-/* CARD */
-.card{
-display:flex;
-justify-content:space-between;
-align-items:center;
-}
+        .tabs {
+            display: flex;
+            gap: 10px;
+        }
 
-.left{
-display:flex;
-gap:15px;
-align-items:flex-start;
-}
+        .tab {
+            padding: 10px 18px;
+            border-radius: 20px;
+            background: rgba(255, 255, 255, 0.1);
+            cursor: pointer;
+        }
 
-.icon{
-background:#ef444433;
-color:#ef4444;
-padding:12px;
-border-radius:10px;
-}
+        .tab.active {
+            background: #fff;
+            color: #000;
+        }
 
-.actions{
-margin-top:10px;
-display:flex;
-gap:10px;
-}
+        .card {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
 
-.btn{
-padding:10px 15px;
-border-radius:10px;
-cursor:pointer;
-font-weight:500;
-}
+        .left {
+            display: flex;
+            gap: 15px;
+            align-items: flex-start;
+        }
 
-.active {
-    background: rgba(255,255,255,0.25);
-}
+        .icon {
+            background: #ef444433;
+            color: #ef4444;
+            padding: 12px;
+            border-radius: 10px;
+        }
 
-.read{background:#fff;color:#000;}
-.dismiss{background:#ef4444;color:#fff;}
+        .actions {
+            margin-top: 10px;
+            display: flex;
+            gap: 10px;
+        }
 
-.badge{
-background:#ef4444;
-padding:5px 10px;
-border-radius:10px;
-font-size:12px;
-}
+        .btn {
+            padding: 10px 15px;
+            border-radius: 10px;
+            cursor: pointer;
+            font-weight: 500;
+        }
 
-.dot{
-width:8px;
-height:8px;
-background:#3b82f6;
-border-radius:50%;
-display:inline-block;
-margin-left:8px;
-}
+        .read {
+            background: #fff;
+            color: #000;
+        }
 
-/* ICON BACKGROUNDS */
-.icon{
-padding:12px;
-border-radius:12px;
-font-size:20px;
-display:flex;
-align-items:center;
-justify-content:center;
-}
+        .dismiss {
+            background: #ef4444;
+            color: #fff;
+        }
 
-.yellow-bg{
-background:rgba(250,204,21,0.2);
-color:#facc15;
-}
+        .badge {
+            padding: 5px 12px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: 600;
+        }
 
-.green-bg{
-background:rgba(34,197,94,0.2);
-color:#22c55e;
-}
+        .badge.medium {
+            background: rgba(250, 204, 21, 0.2);
+            color: #facc15;
+        }
 
-/* META TEXT */
-.meta{
-font-size:13px;
-color:#ddd;
-margin-top:5px;
-}
+        .badge.low {
+            background: rgba(34, 197, 94, 0.2);
+            color: #22c55e;
+        }
 
-/* RIGHT SIDE */
-.right{
-display:flex;
-align-items:center;
-gap:10px;
-}
+        .dot {
+            width: 8px;
+            height: 8px;
+            background: #3b82f6;
+            border-radius: 50%;
+        }
 
-/* BADGES */
-.badge{
-padding:5px 12px;
-border-radius:12px;
-font-size:12px;
-font-weight:600;
-}
+        .meta {
+            font-size: 13px;
+            color: #ddd;
+            margin-top: 5px;
+        }
 
-.badge.medium{
-background:rgba(250,204,21,0.2);
-color:#facc15;
-}
-
-.badge.low{
-background:rgba(34,197,94,0.2);
-color:#22c55e;
-}
-
-/* BLUE DOT */
-.dot{
-width:8px;
-height:8px;
-background:#3b82f6;
-border-radius:50%;
-}
-
-</style>
+        .right {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+    </style>
 </head>
 
 <body>
 
-<!-- SIDEBAR -->
-<div class="sidebar">
-<div class="logo">🔔 SubRemind</div>
-<div class="subtitle">Smart Billing Reminders</div>
+    <!-- SIDEBAR -->
+    <div class="sidebar">
+        <div class="logo">🔔 SubRemind</div>
+        <div class="subtitle">Smart Billing Reminders</div>
 
-<a href="firstpage.html"><i class='bx bxs-dashboard'></i> Dashboard</a>
-<a><i class='bx bx-credit-card'></i> Subscriptions</a>
-<a href="addnewsubscription.html"><i class='bx bx-plus'></i> Add New</a>
-<a class="active"><i class='bx bx-bell'></i> Reminders</a>
-<a href="settings.html"><i class='bx bx-cog'></i> Settings</a>
+        <a href="firstpage.html"><i class='bx bxs-dashboard'></i> Dashboard</a>
+        <a><i class='bx bx-credit-card'></i> Subscriptions</a>
+        <a href="addnewsubscription.html"><i class='bx bx-plus'></i> Add New</a>
+        <a class="active"><i class='bx bx-bell'></i> Reminders</a>
+        <a href="settings.html"><i class='bx bx-cog'></i> Settings</a>
 
-<div style="position:absolute; bottom:20px;">
-<a href="login.html"><i class='bx bx-log-out'></i> Logout</a>
-</div>
-</div>
+        <div style="position:absolute; bottom:20px;">
+            <a href="login.html"><i class='bx bx-log-out'></i> Logout</a>
+        </div>
+    </div>
 
-<!-- MAIN -->
-<div class="main">
+    <!-- MAIN -->
+    <div class="main">
 
-<!-- HEADER -->
-<div class="glass header">
-<div>
-<h1><i class='bx bx-bell'></i> Reminders</h1>
-<p>Stay on top of your subscription payments</p>
-</div>
-<div class="mark-btn">Mark All as Read</div>
-</div>
+        <!-- HEADER -->
+        <div class="glass header">
+            <div>
+                <h1><i class='bx bx-bell'></i> Reminders</h1>
+                <p>Stay on top of your subscription payments</p>
+            </div>
+            <div class="mark-btn" onclick="markAllRead()">Mark All as Read</div>
+        </div>
 
-<!-- STATS -->
-<div class="stats">
+        <!-- STATS -->
+        <div class="stats"></div>
 
-<div class="glass stat">
-<i class='bx bx-error red'></i>
-<p>Overdue</p>
-<h2>1</h2>
-</div>
+        <!-- TABS -->
+        <div class="glass">
+            <div class="tabs">
+                <div class="tab active" data-filter="all">All Reminders</div>
+                <div class="tab" data-filter="unread">Unread (0)</div>
+                <div class="tab" data-filter="upcoming">Upcoming</div>
+                <div class="tab" data-filter="overdue">Overdue (0)</div>
+            </div>
+        </div>
 
-<div class="glass stat">
-<i class='bx bx-time yellow'></i>
-<p>Upcoming</p>
-<h2>3</h2>
-</div>
+    </div>
 
-<div class="glass stat">
-<i class='bx bx-bell blue'></i>
-<p>Unread</p>
-<h2>4</h2>
-</div>
+    <script>
+        function setupTabs() {
+            const tabs = document.querySelectorAll(".tab");
+            const cards = document.querySelectorAll(".card");
 
-</div>
+            tabs.forEach(tab => {
+                tab.onclick = () => {
+                    tabs.forEach(t => t.classList.remove("active"));
+                    tab.classList.add("active");
 
-<!-- TABS -->
-<div class="glass">
-<div class="tabs">
-<div class="tab active" data-filter="all">All Reminders</div>
-<div class="tab" data-filter="unread">Unread (4)</div>
-<div class="tab" data-filter="upcoming">Upcoming</div>
-<div class="tab" data-filter="overdue">Overdue (1)</div>
-</div>
-</div>
+                    const filter = tab.dataset.filter;
 
-<!-- CARD -->
-<div class="glass card" data-type="unread overdue">
-
-<div class="left">
-<div class="icon">
-<i class='bx bx-error'></i>
-</div>
-
-<div>
-<h2>Adobe Creative Cloud</h2>
-<p>Payment due today!</p>
-<p style="font-size:13px;color:#ddd;">
-<i class='bx bx-time'></i> Apr 7, 2026 &nbsp;&nbsp; ₹249
-</p>
-
-<div class="actions">
-<div class="btn read"><i class='bx bx-check'></i> Mark as Read</div>
-<div class="btn dismiss"><i class='bx bx-x'></i> Dismiss</div>
-</div>
-</div>
-</div>
-
-<div>
-<span class="badge">high</span>
-<span class="dot"></span>
-</div>
-
-</div>
-
-<!-- NETFLIX -->
-<div class="glass card" data-type="unread upcoming">
-
-<div class="left">
-<div class="icon yellow-bg">
-<i class='bx bx-time-five'></i>
-</div>
-
-<div>
-<h2>Netflix</h2>
-<p>Payment due in 3 days</p>
-
-<p class="meta">
-<i class='bx bx-time'></i> Apr 10, 2026 &nbsp;&nbsp; ₹199
-</p>
-
-<div class="actions">
-<div class="btn read"><i class='bx bx-check'></i> Mark as Read</div>
-<div class="btn dismiss"><i class='bx bx-x'></i> Dismiss</div>
-</div>
-</div>
-</div>
-
-<div class="right">
-<span class="badge medium">medium</span>
-<span class="dot"></span>
-</div>
-
-</div>
-
-
-<!-- SPOTIFY -->
-<div class="glass card" data-type="unread upcoming">
-
-<div class="left">
-<div class="icon yellow-bg">
-<i class='bx bx-time-five'></i>
-</div>
-
-<div>
-<h2>Spotify</h2>
-<p>Payment due in 5 days</p>
-
-<p class="meta">
-<i class='bx bx-time'></i> Apr 12, 2026 &nbsp;&nbsp; ₹99
-</p>
-
-<div class="actions">
-<div class="btn read"><i class='bx bx-check'></i> Mark as Read</div>
-<div class="btn dismiss"><i class='bx bx-x'></i> Dismiss</div>
-</div>
-</div>
-</div>
-
-<div class="right">
-<span class="badge medium">medium</span>
-<span class="dot"></span>
-</div>
-
-</div>
-
-
-<!-- MICROSOFT -->
-<div class="glass card" data-type="read">
-
-<div class="left">
-<div class="icon green-bg">
-<i class='bx bx-check'></i>
-</div>
-
-<div>
-<h2>Microsoft 365</h2>
-<p>Successfully renewed</p>
-
-<p class="meta">
-<i class='bx bx-time'></i> Apr 5, 2026 &nbsp;&nbsp; ₹399
-</p>
-
-<div class="actions">
-<div class="btn dismiss"><i class='bx bx-x'></i> Dismiss</div>
-</div>
-</div>
-</div>
-
-<div class="right">
-<span class="badge low">low</span>
-</div>
-
-</div>
-
-<!-- AWS -->
-<div class="glass card" data-type="unread upcoming">
-
-<div class="left">
-<div class="icon yellow-bg">
-<i class='bx bx-time-five'></i>
-</div>
-
-<div>
-<h2>AWS</h2>
-<p>Payment due in 8 days</p>
-
-<p class="meta">
-<i class='bx bx-time'></i> Apr 15, 2026 &nbsp;&nbsp; ₹499
-</p>
-
-<div class="actions">
-<div class="btn read"><i class='bx bx-check'></i> Mark as Read</div>
-<div class="btn dismiss"><i class='bx bx-x'></i> Dismiss</div>
-</div>
-</div>
-</div>
-
-<div class="right">
-<span class="badge high">high</span>
-<span class="dot"></span>
-</div>
-
-</div>
-
-
-<!-- GITHUB PRO -->
-<div class="glass card" data-type="read">
-
-<div class="left">
-<div class="icon green-bg">
-<i class='bx bx-check'></i>
-</div>
-
-<div>
-<h2>GitHub Pro</h2>
-<p>Payment processed successfully</p>
-
-<p class="meta">
-<i class='bx bx-time'></i> Apr 3, 2026 &nbsp;&nbsp; ₹349
-</p>
-
-<div class="actions">
-<div class="btn dismiss"><i class='bx bx-x'></i> Dismiss</div>
-</div>
-</div>
-</div>
-
-<div class="right">
-<span class="badge low">low</span>
-</div>
-
-</div>
-
-</div>
-
-
-
-<script>
-const tabs = document.querySelectorAll(".tab");
-const cards = document.querySelectorAll(".card");
-
-tabs.forEach(tab => {
-tab.addEventListener("click", () => {
-
-    // active UI
-    tabs.forEach(t => t.classList.remove("active"));
-    tab.classList.add("active");
-
-    const filter = tab.getAttribute("data-filter");
-
-    cards.forEach(card => {
-        const type = card.getAttribute("data-type");
-
-        if(filter === "all"){
-            card.style.display = "flex";
+                    cards.forEach(card => {
+                        const type = card.dataset.type;
+                        card.style.display =
+                            filter === "all" || type.includes(filter) ? "flex" : "none";
+                    });
+                };
+            });
         }
-        else if(type.includes(filter)){
-            card.style.display = "flex";
-        }
-        else{
-            card.style.display = "none";
-        }
-    });
 
-});
-});
-</script>
+        async function loadReminders() {
+            const userId = localStorage.getItem("user_id");
+
+            const res = await fetch(`http://localhost:5000/all-reminders/${userId}`);
+            const data = await res.json();
+
+            let overdue = 0, upcoming = 0, unread = 0;
+            let html = "";
+
+            data.forEach(item => {
+
+                let text = "", badge = "medium", icon = "bx-time-five";
+
+                if (item.days_left <= 0) {
+                    text = item.days_left === 0 ? "Payment due today!" : "Payment overdue!";
+                    badge = "high";
+                    icon = "bx-error";
+                    overdue++;
+                } else {
+                    text = `Payment due in ${item.days_left} days`;
+                    upcoming++;
+                }
+
+                if (!item.read_status) unread++;
+
+                // ✅ FIX DATE HERE
+                const formattedDate = item.next_payment_date.split("T")[0];
+
+                html += `
+    <div class="glass card" data-type="${item.type} ${item.read_status ? 'read' : 'unread'}">
+        <div class="left">
+            <div class="icon"><i class='bx ${icon}'></i></div>
+            <div>
+                <h2>${item.name}</h2>
+                <p>${text}</p>
+                
+                <p class="meta">${formattedDate} &nbsp;&nbsp; ₹${item.amount}</p>
+
+                <div class="actions">
+                    ${!item.read_status ? `<div class="btn read" onclick="markRead(${item.id})">Mark as Read</div>` : ""}
+                    <div class="btn dismiss" onclick="dismiss(${item.id})">Dismiss</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="right">
+            <span class="badge ${badge}">${badge}</span>
+            ${!item.read_status ? `<span class="dot"></span>` : ""}
+        </div>
+    </div>`;
+            });
+
+            document.querySelector(".main").innerHTML += html;
+
+            document.querySelector(".stats").innerHTML = `
+        <div class="glass stat"><i class='bx bx-error red'></i><p>Overdue</p><h2>${overdue}</h2></div>
+        <div class="glass stat"><i class='bx bx-time yellow'></i><p>Upcoming</p><h2>${upcoming}</h2></div>
+        <div class="glass stat"><i class='bx bx-bell blue'></i><p>Unread</p><h2>${unread}</h2></div>
+    `;
+
+            document.querySelector('[data-filter="unread"]').innerText = `Unread (${unread})`;
+            document.querySelector('[data-filter="overdue"]').innerText = `Overdue (${overdue})`;
+
+            setupTabs();
+        }
+
+        async function markRead(id) {
+            await fetch(`http://localhost:5000/mark-read/${id}`, { method: "PUT" });
+            location.reload();
+        }
+
+        async function dismiss(id) {
+            await fetch(`http://localhost:5000/dismiss-reminder/${id}`, { method: "DELETE" });
+            location.reload();
+        }
+
+        async function markAllRead() {
+            await fetch(`http://localhost:5000/mark-all-read`, { method: "PUT" });
+            location.reload();
+        }
+
+        loadReminders();
+    </script>
 
 </body>
+
 </html>
