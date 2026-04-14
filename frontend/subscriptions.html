@@ -1,0 +1,470 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Subscriptions - SubRemind</title>
+
+<link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+
+<style>
+
+/* BASE */
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:'Poppins',sans-serif;
+}
+
+body{
+min-height:100vh;
+background:url('../images/loginbg.jpg') no-repeat center;
+background-size:cover;
+background-attachment:fixed;
+}
+
+body::before{
+content:"";
+position:fixed;
+width:100%;
+height:100%;
+background:rgba(0,0,0,0.5);
+z-index:0;
+}
+
+/* SIDEBAR */
+.sidebar{
+position:fixed;
+width:240px;
+height:100vh;
+padding:25px;
+background:rgba(255,255,255,0.1);
+border-right:2px solid rgba(255,255,255,0.2);
+backdrop-filter:blur(15px);
+color:#fff;
+z-index:10;
+}
+
+.logo{font-size:22px;font-weight:600;}
+.subtitle{font-size:13px;margin-bottom:30px;color:#ddd;}
+
+.sidebar a{
+display:flex;
+align-items:center;
+gap:10px;
+padding:12px;
+border-radius:25px;
+text-decoration:none;
+color:#fff;
+margin-bottom:10px;
+}
+
+.sidebar a:hover{background:rgba(255,255,255,0.2);}
+.active{background:rgba(255,255,255,0.25);}
+
+/* MAIN */
+.main{
+margin-left:260px;
+padding:40px;
+color:#fff;
+position:relative;
+z-index:1;
+}
+
+/* GLASS */
+.glass{
+background:rgba(255,255,255,0.1);
+border:2px solid rgba(255,255,255,0.2);
+backdrop-filter:blur(15px);
+border-radius:15px;
+padding:25px;
+margin-bottom:20px;
+}
+
+/* HEADER */
+.header{
+display:flex;
+justify-content:space-between;
+align-items:center;
+}
+
+.total{text-align:right;}
+
+/* SEARCH */
+.top-bar{
+display:flex;
+gap:20px;
+align-items:center;
+}
+
+.search{
+flex:1;
+display:flex;
+align-items:center;
+gap:10px;
+padding:12px 15px;
+border-radius:12px;
+background:rgba(255,255,255,0.1);
+border:2px solid rgba(255,255,255,0.2);
+}
+
+.search input{
+background:none;
+border:none;
+outline:none;
+color:#fff;
+width:100%;
+}
+
+.search input::placeholder{
+color: rgba(255,255,255,0.9);
+text-shadow: 0 0 5px rgba(255,255,255,0.3);
+}
+
+/* TABS */
+.tabs{
+display:flex;
+gap:10px;
+}
+
+.tab{
+padding:10px 18px;
+border-radius:12px;
+background:rgba(255,255,255,0.1);
+cursor:pointer;
+}
+
+.tab.active{
+background:#fff;
+color:#000;
+}
+
+/* GRID */
+.grid{
+display:grid;
+grid-template-columns:repeat(3,1fr);
+gap:20px;
+}
+
+/* CARD */
+.card{
+display:flex;
+flex-direction:column;
+gap:10px;
+}
+
+/* TOP ROW */
+.card-top{
+display:flex;
+justify-content:space-between;
+align-items:center;
+}
+
+/* LOGO BOX */
+.logo-box{
+width:50px;
+height:50px;
+border-radius:12px;
+display:flex;
+align-items:center;
+justify-content:center;
+font-weight:600;
+font-size:22px;
+color:#fff;
+}
+
+/* COLORS */
+.red{background:#ef4444;}
+.green{background:#22c55e;}
+.purple{background:#a855f7;}
+.orange{background:#f97316;}
+.dark{background:#1f2937;}
+.blue{background:#3b82f6;}
+.sky{background:#0ea5e9;}
+
+/* BADGE */
+.badge{
+padding:5px 10px;
+border-radius:10px;
+font-size:12px;
+}
+
+.active-badge{
+background:rgba(34,197,94,0.2);
+color:#22c55e;
+}
+
+.paused-badge{
+background:rgba(234,179,8,0.2);
+color:#eab308;
+}
+
+/* TEXT */
+.small{color:#ddd;font-size:13px;}
+.price{font-size:24px;font-weight:600;}
+
+/* BILLING */
+.billing{
+background:rgba(255,255,255,0.08);
+padding:12px;
+border-radius:10px;
+}
+
+/* ACTIONS */
+.actions{
+display:flex;
+gap:10px;
+margin-top:10px;
+}
+
+.btn{
+flex:1;
+padding:10px;
+border-radius:10px;
+text-align:center;
+cursor:pointer;
+background:rgba(255,255,255,0.1);
+}
+
+.icon-btn{
+width:40px;
+display:flex;
+align-items:center;
+justify-content:center;
+border-radius:10px;
+background:rgba(255,255,255,0.1);
+}
+
+.delete{
+background:#ef4444;
+color:#fff;
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="sidebar">
+<div class="logo">🔔 SubRemind</div>
+<div class="subtitle">Smart Billing Reminders</div>
+
+<a href="firstpage.html"><i class='bx bxs-dashboard'></i> Dashboard</a>
+<a href="subscriptions.html"><i class='bx bx-credit-card'></i> Subscriptions</a>
+<a href="addnewsubscription.html"><i class='bx bx-plus'></i> Add New</a>
+<a href="reminders.html"><i class='bx bx-bell'></i> Reminders</a>
+<a href="settings.html"><i class='bx bx-cog'></i> Settings</a>
+
+<div style="position:absolute; bottom:20px;">
+<a><i class='bx bx-log-out'></i> Logout</a>
+</div>
+</div>
+
+<div class="main">
+
+<div class="glass header">
+<div>
+<h1>My Subscriptions</h1>
+<p>Manage all your subscriptions in one place</p>
+</div>
+
+<div class="total">
+<p>Total Monthly Cost</p>
+<h1>₹192.45</h1>
+</div>
+</div>
+
+<div class="glass top-bar">
+
+<div class="search">
+<i class='bx bx-search'></i>
+<input placeholder="Search subscriptions...">
+</div>
+
+<div class="tabs">
+<div class="tab active" data-filter="all">All</div>
+<div class="tab" data-filter="active">Active</div>
+<div class="tab" data-filter="paused">Paused</div>
+</div>
+
+</div>
+
+<div class="grid">
+
+<!-- NETFLIX -->
+<div class="glass card" data-type="active">
+<div class="card-top">
+<div class="logo-box red">N</div>
+<div class="badge active-badge">active</div>
+</div>
+<h2>Netflix</h2><p class="small">Entertainment</p>
+<div class="price">₹15.99</div>
+<p class="small">Monthly</p>
+<div class="billing">
+    <p class="small">Next Billing</p>
+    <b>Apr 10, 2026</b>
+</div>
+<div class="actions">
+<div class="btn"><i class='bx bx-pause'></i> Pause</div>
+<div class="icon-btn"><i class='bx bx-edit'></i></div>
+<div class="icon-btn delete"><i class='bx bx-trash'></i></div>
+</div>
+</div>
+
+<!-- SPOTIFY -->
+<div class="glass card" data-type="active">
+<div class="card-top">
+<div class="logo-box green">S</div>
+<div class="badge active-badge">active</div>
+</div>
+<h2>Spotify</h2>
+<p class="small">Music</p>
+<div class="price">₹9.99</div>
+<p class="small">Monthly</p>
+<div class="billing"><p class="small">Next Billing</p><b>Apr 12, 2026</b></div>
+<div class="actions">
+<div class="btn"><i class='bx bx-pause'></i> Pause</div>
+<div class="icon-btn"><i class='bx bx-edit'></i></div>
+<div class="icon-btn delete"><i class='bx bx-trash'></i></div>
+</div>
+</div>
+
+<!-- ADOBE -->
+<div class="glass card" data-type="active">
+<div class="card-top">
+<div class="logo-box purple">A</div>
+<div class="badge active-badge">active</div>
+</div>
+<h2>Adobe Creative Cloud</h2>
+<p class="small">Software</p>
+<div class="price">₹54.99</div>
+<p class="small">Monthly</p>
+<div class="billing"><p class="small">Next Billing</p><b>Apr 18, 2026</b></div>
+<div class="actions">
+<div class="btn"><i class='bx bx-pause'></i> Pause</div>
+<div class="icon-btn"><i class='bx bx-edit'></i></div>
+<div class="icon-btn delete"><i class='bx bx-trash'></i></div>
+</div>
+</div>
+
+<!-- AWS -->
+<div class="glass card" data-type="active">
+<div class="card-top">
+<div class="logo-box orange">A</div>
+<div class="badge active-badge">active</div>
+</div>
+<h2>AWS</h2>
+<p class="small">Cloud Services</p>
+<div class="price">₹85.50</div>
+<div class="billing"><p class="small">Next Billing</p><b>Apr 15, 2026</b></div>
+<div class="actions">
+<div class="btn"><i class='bx bx-pause'></i> Pause</div>
+<div class="icon-btn"><i class='bx bx-edit'></i></div>
+<div class="icon-btn delete"><i class='bx bx-trash'></i></div>
+</div>
+</div>
+
+<!-- GITHUB -->
+<div class="glass card" data-type="active">
+<div class="card-top">
+<div class="logo-box dark">G</div>
+<div class="badge active-badge">active</div>
+</div>
+<h2>GitHub Pro</h2>
+<p class="small">Developer Tools</p>
+<div class="price">₹4</div>
+<div class="billing"><p class="small">Next Billing</p><b>Apr 20, 2026</b></div>
+<div class="actions">
+<div class="btn"><i class='bx bx-pause'></i> Pause</div>
+<div class="icon-btn"><i class='bx bx-edit'></i></div>
+<div class="icon-btn delete"><i class='bx bx-trash'></i></div>
+</div>
+</div>
+
+<!-- ZOOM -->
+<div class="glass card" data-type="paused">
+<div class="card-top">
+<div class="logo-box blue">Z</div>
+<div class="badge paused-badge">paused</div>
+</div>
+<h2>Zoom</h2>
+<p class="small">Communication</p>
+<div class="price">₹14.99</div>
+<div class="billing"><p class="small">Next Billing</p><b>Apr 8, 2026</b></div>
+<div class="actions">
+<div class="btn"><i class='bx bx-play'></i> Resume</div>
+<div class="icon-btn"><i class='bx bx-edit'></i></div>
+<div class="icon-btn delete"><i class='bx bx-trash'></i></div>
+</div>
+</div>
+
+<!-- MICROSOFT -->
+<div class="glass card" data-type="active">
+<div class="card-top">
+<div class="logo-box blue">M</div>
+<div class="badge active-badge">active</div>
+</div>
+<h2>Microsoft 365</h2>
+<p class="small">Productivity</p>
+<div class="price">₹9.99</div>
+<div class="billing"><p class="small">Next Billing</p><b>May 5, 2026</b></div>
+<div class="actions">
+<div class="btn"><i class='bx bx-pause'></i> Pause</div>
+<div class="icon-btn"><i class='bx bx-edit'></i></div>
+<div class="icon-btn delete"><i class='bx bx-trash'></i></div>
+</div>
+</div>
+
+<!-- DROPBOX -->
+<div class="glass card" data-type="active">
+<div class="card-top">
+<div class="logo-box sky">D</div>
+<div class="badge active-badge">active</div>
+</div>
+<h2>Dropbox</h2>
+<p class="small">Cloud Storage</p>
+<div class="price">₹11.99</div>
+<div class="billing"><p class="small">Next Billing</p><b>Apr 25, 2026</b></div>
+<div class="actions">
+<div class="btn"><i class='bx bx-pause'></i> Pause</div>
+<div class="icon-btn"><i class='bx bx-edit'></i></div>
+<div class="icon-btn delete"><i class='bx bx-trash'></i></div>
+</div>
+</div>
+
+</div>
+
+</div>
+
+<script>
+
+const tabs = document.querySelectorAll(".tab");
+const cards = document.querySelectorAll(".card");
+
+tabs.forEach(tab => {
+tab.addEventListener("click", () => {
+
+    // Active tab UI
+    tabs.forEach(t => t.classList.remove("active"));
+    tab.classList.add("active");
+
+    const filter = tab.getAttribute("data-filter");
+
+    cards.forEach(card => {
+        const type = card.getAttribute("data-type");
+
+        if(filter === "all" || filter === type){
+            card.style.display = "flex";
+        } else {
+            card.style.display = "none";
+        }
+    });
+
+});
+});
+
+</script>
+
+</body>
+</html>
