@@ -7,6 +7,22 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
+//NextpaymentDate
+const nextPaymentDateSql = `
+    CASE
+        WHEN sd.billing_cycle = 'Monthly' THEN
+            DATE_ADD(sd.start_date, INTERVAL TIMESTAMPDIFF(MONTH, sd.start_date, CURDATE()) + 1 MONTH)
+
+        WHEN sd.billing_cycle = 'Quarterly' THEN
+            DATE_ADD(sd.start_date, INTERVAL (TIMESTAMPDIFF(MONTH, sd.start_date, CURDATE()) DIV 3 + 1) * 3 MONTH)
+
+        WHEN sd.billing_cycle = 'Yearly' THEN
+            DATE_ADD(sd.start_date, INTERVAL TIMESTAMPDIFF(YEAR, sd.start_date, CURDATE()) + 1 YEAR)
+
+        ELSE sd.start_date
+    END
+`;
+
 // MySQL connection
 const db = mysql.createConnection({
     host: "localhost",
@@ -134,21 +150,73 @@ app.post("/forgot-password", (req, res) => {
 });
 
 
-
-// Add Subscription
+//ADD SUBSCRIPTION
 app.post("/add-subscription", (req, res) => {
-    const { user_id, name, amount, renewal_date, status } = req.body;
+    const {
+        user_id,
+        name,
+        category,
+        amount,
+        billing_cycle,
+        start_date,
+        renewal_date,
+        remind_before,
+        notes,
+        status
+    } = req.body;
+    const effectiveStartDate = start_date || renewal_date;
 
-    const sql = `
+    if (!user_id || !name || !amount || !effectiveStartDate) {
+        return res.status(400).send("Missing required fields");
+    }
+
+    const subscriptionSql = `
         INSERT INTO subscription (user_id, name, amount, renewal_date, status)
         VALUES (?, ?, ?, ?, ?)
     `;
 
-    db.query(sql, [user_id, name, amount, renewal_date, status], (err) => {
-        if (err) return res.send("Error adding subscription");
+    db.query(
+        subscriptionSql,
+        [user_id, name, amount, effectiveStartDate, status || "active"],
+        (subscriptionErr, subscriptionResult) => {
+            if (subscriptionErr) {
+                console.log(subscriptionErr);
+                return res.status(500).send("Error adding subscription");
+            }
 
-        res.send("Subscription added successfully!");
-    });
+            const detailsSql = `
+                INSERT INTO subscription_details (
+                    subscription_id,
+                    category,
+                    billing_cycle,
+                    start_date,
+                    remind_before,
+                    notes
+                )
+                VALUES (?, ?, ?, ?, ?, ?)
+            `;
+
+            db.query(
+                detailsSql,
+                [
+                    subscriptionResult.insertId,
+                    category || null,
+                    billing_cycle || "Monthly",
+                    effectiveStartDate,
+                    Number(remind_before || 7),
+                    notes || null
+                ],
+                (detailsErr) => {
+                    if (detailsErr) {
+                        console.log(detailsErr);
+                        return res.status(500).send("Error saving subscription details");
+                    }
+
+                    res.send("Subscription added successfully!");
+                }
+            );
+        }
+    );
 });
 
 // Get all subscriptions for logged-in user
@@ -210,23 +278,81 @@ app.get("/total-spending/:user_id", (req, res) => {
     });
 });
 
-// Reminder Logic
+// Reminder Logic FOR DASHBOARD ONLY
 app.get("/reminders/:user_id", (req, res) => {
     const user_id = req.params.user_id;
-    const sql = `SELECT * FROM subscription 
-    WHERE user_id=? 
-    AND status='active' 
-    AND renewal_date BETWEEN CURDATE() AND DATE_ADD(CURDATE(), INTERVAL 7 DAY)`;
+
+    const sql = `
+        SELECT 
+            sub.*,
+            sd.remind_before,
+            ${nextPaymentDateSql} AS next_payment_date
+
+        FROM subscription sub
+        LEFT JOIN subscription_details sd 
+            ON sd.subscription_id = sub.id
+
+        WHERE sub.user_id = ?
+        AND sub.status = 'active'
+
+        AND DATEDIFF(
+            ${nextPaymentDateSql},
+            CURDATE()
+        ) BETWEEN 0 AND COALESCE(sd.remind_before, 7)
+    `;
 
     db.query(sql, [user_id], (err, result) => {
         if (err) {
             console.log(err);
             return res.send("Error fetching reminders");
         }
-        if (result.length === 0) {
-            return res.json({ message: "No upcoming renewals in next 7 days" });
-        }
+
         res.json({ upcoming_renewals: result });
+    });
+});
+
+
+//FOR REMINDERS PAGE API
+app.get("/all-reminders/:user_id", (req, res) => {
+    const user_id = req.params.user_id;
+
+    const sql = `
+        SELECT 
+            sub.*,
+            sd.remind_before,
+            sd.read_status,
+            ${nextPaymentDateSql} AS next_payment_date,
+
+            DATEDIFF(
+                ${nextPaymentDateSql},
+                CURDATE()
+            ) AS days_left
+
+        FROM subscription sub
+        LEFT JOIN subscription_details sd 
+            ON sd.subscription_id = sub.id
+
+        WHERE sub.user_id = ?
+        AND sub.status = 'active'
+    `;
+
+    db.query(sql, [user_id], (err, result) => {
+        if (err) {
+            console.log(err);
+            return res.send("Error fetching reminders");
+        }
+
+        const processed = result.map(item => {
+            let type = "upcoming";
+
+            if (item.days_left < 0) type = "overdue";
+            else if (item.days_left <= (item.remind_before || 7)) type = "upcoming";
+            else type = "normal";
+
+            return { ...item, type };
+        });
+
+        res.json(processed);
     });
 });
 
@@ -249,26 +375,72 @@ app.delete("/delete-user/:id", (req, res) => {
 });
 
 
+// ✅ CORRECT
+app.put("/mark-read/:id", (req, res) => {
+    const id = req.params.id;
+
+    db.query(
+        "UPDATE subscription_details SET read_status = 1 WHERE subscription_id = ?",
+        [id],
+        (err) => {
+            if (err) return res.send(err);
+            res.send("Marked as read");
+        }
+    );
+});
+
+
+app.delete("/dismiss-reminder/:id", (req, res) => {
+    const id = req.params.id;
+
+    const sql = `
+        UPDATE subscription_details 
+        SET dismissed = 1 
+        WHERE subscription_id = ?
+        AND sub.status = 'active'
+AND (sd.dismissed IS NULL OR sd.dismissed = 0)
+    `;
+
+    db.query(sql, [id], (err) => {
+        if (err) {
+            console.log(err);
+            return res.send("Error dismissing");
+        }
+
+        res.send("Dismissed");
+    });
+});
+
+//Frontpage API
 app.get("/dashboard-summary/:user_id", (req, res) => {
     const user_id = req.params.user_id;
 
     const sql = `
         SELECT
-            SUM(CASE WHEN status = 'active' THEN 1 ELSE 0 END) AS activeSubscriptions,
-            COALESCE(SUM(CASE WHEN status = 'active' THEN amount ELSE 0 END), 0) AS monthlySpending,
+            SUM(CASE WHEN sub.status = 'active' THEN 1 ELSE 0 END) AS activeSubscriptions,
+            COALESCE(SUM(CASE WHEN sub.status = 'active' THEN sub.amount ELSE 0 END), 0) AS monthlySpending,
             SUM(
                 CASE
-                    WHEN status = 'active'
-                    AND renewal_date BETWEEN CURDATE() AND DATE_ADD(CURDATE(), INTERVAL 7 DAY)
+                    WHEN sub.status = 'active'
+                    AND DATEDIFF(calc.next_payment_date, CURDATE()) BETWEEN 0 AND COALESCE(sd.remind_before, 7)
                     THEN 1
                     ELSE 0
                 END
             ) AS upcomingPayments
-        FROM subscription
-        WHERE user_id = ?
+        FROM subscription sub
+        LEFT JOIN subscription_details sd ON sd.subscription_id = sub.id
+        JOIN (
+            SELECT
+                s.id,
+                ${nextPaymentDateSql} AS next_payment_date
+            FROM subscription s
+            LEFT JOIN subscription_details sd ON sd.subscription_id = s.id
+            WHERE s.user_id = ?
+        ) calc ON calc.id = sub.id
+        WHERE sub.user_id = ?
     `;
 
-    db.query(sql, [user_id], (err, result) => {
+    db.query(sql, [user_id, user_id], (err, result) => {
         if (err) {
             console.log(err);
             return res.status(500).json({ error: "Error loading dashboard summary" });
