@@ -235,7 +235,7 @@ app.get("/subscriptions/:user_id", (req, res) => {
     });
 });
 
-// Delete Subscription
+// Delete Subscription from SUBSCRIPTIONS
 app.delete("/delete-subscription/:id", (req, res) => {
     const id = req.params.id;
     const sql = "DELETE FROM subscription WHERE id=?";
@@ -249,18 +249,16 @@ app.delete("/delete-subscription/:id", (req, res) => {
     });
 });
 
-// Update Subscription
+// Update Subscription FROM SUBSCRIPTION
 app.put("/update-subscription/:id", (req, res) => {
     const id = req.params.id;
-    const { name, amount, renewal_date, status } = req.body;
-    const sql = "UPDATE subscription SET name=?, amount=?, renewal_date=?, status=? WHERE id=?";
+    const { status } = req.body;
 
-    db.query(sql, [name, amount, renewal_date, status, id], (err, result) => {
-        if (err) {
-            console.log(err);
-            return res.send("Error updating subscription");
-        }
-        res.send("Subscription updated successfully!");
+    const sql = "UPDATE subscription SET status=? WHERE id=?";
+
+    db.query(sql, [status, id], (err) => {
+        if (err) return res.send("Error updating");
+        res.send("Updated");
     });
 });
 
@@ -484,5 +482,26 @@ app.get("/spending-trend/:user_id", (req, res) => {
             labels: result.map((row) => row.monthLabel),
             values: result.map((row) => Number(row.total || 0))
         });
+    });
+});
+
+// 🔍 SEARCH SUBSCRIPTIONS for SUBSCRIPTION page
+app.get("/search-subscriptions/:user_id", (req, res) => {
+    const user_id = req.params.user_id;
+    const search = req.query.q;
+
+    const sql = `
+        SELECT * FROM subscription
+        WHERE user_id = ?
+        AND name LIKE ?
+    `;
+
+    db.query(sql, [user_id, `%${search}%`], (err, result) => {
+        if (err) {
+            console.log(err);
+            return res.send("Error searching");
+        }
+
+        res.json(result);
     });
 });
