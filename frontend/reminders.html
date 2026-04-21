@@ -246,11 +246,11 @@
         <div class="logo">🔔 SubRemind</div>
         <div class="subtitle">Smart Billing Reminders</div>
 
-<a href="firstpage.html"><i class='bx bxs-dashboard'></i> Dashboard</a>
-<a href="subscriptions.html"><i class='bx bx-credit-card'></i> Subscriptions</a>
-<a href="addnewsubscription.html"><i class='bx bx-plus'></i> Add New</a>
-<a href="reminders.html"><i class='bx bx-bell'></i> Reminders</a>
-<a href="settings.html"><i class='bx bx-cog'></i> Settings</a>
+        <a href="firstpage.html"><i class='bx bxs-dashboard'></i> Dashboard</a>
+        <a href="subscriptions.html"><i class='bx bx-credit-card'></i> Subscriptions</a>
+        <a href="addnewsubscription.html"><i class='bx bx-plus'></i> Add New</a>
+        <a href="reminders.html"><i class='bx bx-bell'></i> Reminders</a>
+        <a href="settings.html"><i class='bx bx-cog'></i> Settings</a>
 
         <div style="position:absolute; bottom:20px;">
             <a href="login.html"><i class='bx bx-log-out'></i> Logout</a>
@@ -345,7 +345,7 @@
 
                 <div class="actions">
                     ${!item.read_status ? `<div class="btn read" onclick="markRead(${item.id})">Mark as Read</div>` : ""}
-                    <div class="btn dismiss" onclick="dismiss(${item.id})">Dismiss</div>
+                    <div class="btn dismiss" onclick="dismiss(${item.subscription_id})">Dismiss</div>
                 </div>
             </div>
         </div>
@@ -377,12 +377,34 @@
         }
 
         async function dismiss(id) {
-            await fetch(`http://localhost:5000/dismiss-reminder/${id}`, { method: "DELETE" });
+            console.log("Sending ID:", id);   // 👈 check this
+
+            const confirmAction = confirm("Are you sure you want to dismiss this reminder?");
+            if (!confirmAction) return;
+
+            const res = await fetch(`http://localhost:5000/dismiss-reminder/${id}`, {
+                method: "DELETE"
+            });
+
+            const msg = await res.text();
+            alert(msg);
+
             location.reload();
         }
 
         async function markAllRead() {
-            await fetch(`http://localhost:5000/mark-all-read`, { method: "PUT" });
+            const userId = localStorage.getItem("user_id");
+
+            const confirmAction = confirm("Mark all reminders as read?");
+            if (!confirmAction) return;
+
+            const res = await fetch(`http://localhost:5000/mark-all-read/${userId}`, {
+                method: "PUT"
+            });
+
+            const msg = await res.text();
+            alert(msg);
+
             location.reload();
         }
 

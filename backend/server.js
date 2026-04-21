@@ -284,20 +284,12 @@ app.get("/reminders/:user_id", (req, res) => {
         SELECT 
             sub.*,
             sd.remind_before,
-            ${nextPaymentDateSql} AS next_payment_date
-
-        FROM subscription sub
-        LEFT JOIN subscription_details sd 
-            ON sd.subscription_id = sub.id
-
-        WHERE sub.user_id = ?
-        AND sub.status = 'active'
-
-        AND DATEDIFF(
+            ${nextPaymentDateSql} AS next_payment_date FROM subscription 
+            sub LEFT JOIN subscription_details sd ON sd.subscription_id = sub.id
+WHERE sub.user_id = ? AND sub.status = 'active'
+AND DATEDIFF(
             ${nextPaymentDateSql},
-            CURDATE()
-        ) BETWEEN 0 AND COALESCE(sd.remind_before, 7)
-    `;
+            CURDATE() ) BETWEEN 0 AND COALESCE(sd.remind_before, 7)`;
 
     db.query(sql, [user_id], (err, result) => {
         if (err) {
@@ -316,9 +308,11 @@ app.get("/all-reminders/:user_id", (req, res) => {
 
     const sql = `
         SELECT 
-            sub.*,
-            sd.remind_before,
-            sd.read_status,
+             sub.*,
+    sub.id AS subscription_id,  
+    sd.remind_before,
+    sd.read_status,
+    sd.dismissed,
             ${nextPaymentDateSql} AS next_payment_date,
 
             DATEDIFF(
@@ -330,8 +324,9 @@ app.get("/all-reminders/:user_id", (req, res) => {
         LEFT JOIN subscription_details sd 
             ON sd.subscription_id = sub.id
 
-        WHERE sub.user_id = ?
-        AND sub.status = 'active'
+       WHERE sub.user_id = ?
+AND sub.status = 'active'
+AND (sd.dismissed = 0 OR sd.dismissed IS NULL)
     `;
 
     db.query(sql, [user_id], (err, result) => {
@@ -373,7 +368,7 @@ app.delete("/delete-user/:id", (req, res) => {
 });
 
 
-// ✅ CORRECT
+// Mark-READ API for SUBSCRIPTIONS PAGE
 app.put("/mark-read/:id", (req, res) => {
     const id = req.params.id;
 
@@ -387,25 +382,47 @@ app.put("/mark-read/:id", (req, res) => {
     );
 });
 
+// MARK ALL AS READ API
+app.put("/mark-all-read/:user_id", (req, res) => {
+    const user_id = req.params.user_id;
 
+    const sql = `
+        UPDATE subscription_details sd
+        JOIN subscription sub ON sd.subscription_id = sub.id
+        SET sd.read_status = 1
+        WHERE sub.user_id = ?
+    `;
+
+    db.query(sql, [user_id], (err, result) => {
+        if (err) {
+            console.log(err);
+            return res.send("Error marking all as read");
+        }
+
+        res.send("All reminders marked as read");
+    });
+});
+
+//DISMISS REMINDERS API
 app.delete("/dismiss-reminder/:id", (req, res) => {
     const id = req.params.id;
+
+    console.log("ID RECEIVED:", id);
 
     const sql = `
         UPDATE subscription_details 
         SET dismissed = 1 
-        WHERE subscription_id = ?
-        AND sub.status = 'active'
-AND (sd.dismissed IS NULL OR sd.dismissed = 0)
-    `;
-
-    db.query(sql, [id], (err) => {
+        WHERE subscription_id = ?    `;
+    db.query(sql, [id], (err, result) => {
         if (err) {
-            console.log(err);
             return res.send("Error dismissing");
         }
 
-        res.send("Dismissed");
+        if (result.affectedRows === 0) {
+            return res.send("No matching record");
+        }
+
+        res.send("Dismissed successfully");
     });
 });
 
@@ -456,6 +473,7 @@ app.get("/dashboard-summary/:user_id", (req, res) => {
     });
 });
 
+//spending trend
 app.get("/spending-trend/:user_id", (req, res) => {
     const user_id = req.params.user_id;
 
