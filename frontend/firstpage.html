@@ -18,16 +18,16 @@
 <body>
 
     <div class="sidebar">
-    <div class="logo">🔔 SubTrackr</div>
-    <div class="subtitle">Smart Billing Reminders</div>
-    <a href="firstpage.html"><i class='bx bxs-dashboard'></i> Dashboard</a>
-    <a href="subscriptions.html"><i class='bx bx-credit-card'></i> Subscriptions</a>
-    <a href="addnewsubscription.html"><i class='bx bx-plus'></i> Add New</a>
-    <a href="reminders.html"><i class='bx bx-bell'></i> Reminders</a>
-    <a href="settings.html"><i class='bx bx-cog'></i> Settings</a>
+        <div class="logo">🔔 SubTrackr</div>
+        <div class="subtitle">Smart Billing Reminders</div>
+        <a href="firstpage.html"><i class='bx bxs-dashboard'></i> Dashboard</a>
+        <a href="subscriptions.html"><i class='bx bx-credit-card'></i> Subscriptions</a>
+        <a href="addnewsubscription.html"><i class='bx bx-plus'></i> Add New</a>
+        <a href="reminders.html"><i class='bx bx-bell'></i> Reminders</a>
+        <a href="settings.html"><i class='bx bx-cog'></i> Settings</a>
 
         <div style="position:absolute; bottom:20px;">
-            <a href="login.html"><i class='bx bx-log-out'></i> Logout</a>
+            <a href="index.html"><i class='bx bx-log-out'></i> Logout</a>
         </div>
     </div>
 
@@ -54,7 +54,7 @@
                 <div class="card-box">
                     <span class="percent red" id="monthlyTrend">Updated</span>
                     <div class="icon-box purple"><i class='bx bx-rupee'></i></div>
-                    <p>Monthly Spending</p>
+                    <p>Current Spending</p>
                     <h2 id="monthlySpending">₹0</h2>
                 </div>
             </div>
@@ -212,7 +212,7 @@
             document.getElementById("activeSubscriptions").textContent = summary.activeSubscriptions ?? 0;
             document.getElementById("monthlySpending").textContent = formatCurrency(summary.monthlySpending);
             document.getElementById("upcomingPaymentsCount").textContent = summary.upcomingPayments ?? 0;
-            document.getElementById("savedThisYear").textContent = formatCurrency(summary.savedThisYear);
+            // document.getElementById("savedThisYear").textContent = formatCurrency(summary.savedThisYear);
         }
 
         function setGuestDashboard() {
@@ -270,46 +270,46 @@
         });
 
         async function loadDashboard() {
-    if (!userId) {
-        setGuestDashboard();
-        return;
-    }
+            if (!userId) {
+                setGuestDashboard();
+                return;
+            }
 
-    try {
-        const [summaryResponse, remindersResponse, subscriptionsResponse, trendResponse] = await Promise.all([
-            fetch(`${API_BASE_URL}/dashboard-summary/${userId}`),
-            fetch(`${API_BASE_URL}/reminders/${userId}`),
-            fetch(`${API_BASE_URL}/subscriptions/${userId}`),
-            fetch(`${API_BASE_URL}/spending-trend/${userId}`)
-        ]);
+            try {
+                const [summaryResponse, remindersResponse, subscriptionsResponse, trendResponse] = await Promise.all([
+                    fetch(`${API_BASE_URL}/dashboard-summary/${userId}`),
+                    fetch(`${API_BASE_URL}/reminders/${userId}`),
+                    fetch(`${API_BASE_URL}/subscriptions/${userId}`),
+                    fetch(`${API_BASE_URL}/spending-trend/${userId}`)
+                ]);
 
-        const summary = await summaryResponse.json();
-        const reminders = await remindersResponse.json();
-        const subscriptions = await subscriptionsResponse.json();
-        const trend = await trendResponse.json();
+                const summary = await summaryResponse.json();
+                const reminders = await remindersResponse.json();
+                const subscriptions = await subscriptionsResponse.json();
+                const trend = await trendResponse.json();
 
-        // ✅ Cards
-        setSummaryCards(summary);
+                // ✅ Cards
+                setSummaryCards(summary);
 
-        // ✅ Upcoming payments
-        renderUpcomingPayments(reminders.upcoming_renewals || []);
+                // ✅ Upcoming payments
+                renderUpcomingPayments(reminders.upcoming_renewals || []);
 
-        // ✅ Recent activity (REMOVE LIMIT FOR TESTING SCROLL)
-        renderRecentActivity(Array.isArray(subscriptions) ? subscriptions : []);
+                // ✅ Recent activity 
+                renderRecentActivity(Array.isArray(subscriptions) ? subscriptions : []);
 
-        // ✅ Chart
-        if (trend.labels && trend.values) {
-            spendingChart.data.labels = trend.labels;
-            spendingChart.data.datasets[0].data = trend.values;
-            spendingChart.update();
+                // ✅ Chart
+                if (trend.labels && trend.values) {
+                    spendingChart.data.labels = trend.labels;
+                    spendingChart.data.datasets[0].data = trend.values;
+                    spendingChart.update();
+                }
+
+            } catch (error) {
+                console.error("Dashboard load error:", error);
+                showEmptyState(upcomingPaymentsList, "Could not load dashboard data");
+                showEmptyState(recentActivityList, "Backend connection failed");
+            }
         }
-
-    } catch (error) {
-        console.error("Dashboard load error:", error);
-        showEmptyState(upcomingPaymentsList, "Could not load dashboard data");
-        showEmptyState(recentActivityList, "Backend connection failed");
-    }
-}
 
         loadDashboard();
     </script>
