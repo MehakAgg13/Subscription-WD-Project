@@ -25,6 +25,8 @@ CREATE TABLE IF NOT EXISTS subscription_details (
     start_date DATE NOT NULL,
     remind_before INT NOT NULL DEFAULT 7,
     notes TEXT,
+     read_status TINYINT DEFAULT 0,
+    dismissed TINYINT DEFAULT 0,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     CONSTRAINT fk_subscription_details_subscription
